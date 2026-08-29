@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B62FF">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --ink:#0C1524; --ink-2:#3B4A61; --ink-3:#7A8AA3;
+  --ground:#FFFFFF; --surface:#F2F5FA; --surface-2:#E6ECF6; --line:#D8E1EF;
+  --blue:#1B62FF; --sun:#FFDD2D; --mint:#00A97A; --warn:#E07B00; --crit:#D93A3A;
+  --shadow:0 1px 2px rgba(12,21,36,.06),0 12px 32px -18px rgba(12,21,36,.25);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ink:#EAF0FA; --ink-2:#A9B8CE; --ink-3:#6F809A;
+  --ground:#080D17; --surface:#101A2B; --surface-2:#18253A; --line:#22314A;
+  --blue:#4D86FF; --mint:#2ED9A6; --warn:#FFB43D; --crit:#FF6B6B;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
+}}
+:root[data-theme="dark"]{
+  --ink:#EAF0FA; --ink-2:#A9B8CE; --ink-3:#6F809A;
+  --ground:#080D17; --surface:#101A2B; --surface-2:#18253A; --line:#22314A;
+  --blue:#4D86FF; --mint:#2ED9A6; --warn:#FFB43D; --crit:#FF6B6B;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--surface); color:var(--ink); font-family:Onest,"Segoe UI",system-ui,sans-serif; font-size:15px; line-height:1.5}
+h1,h2,h3,h4{margin:0; letter-spacing:-.02em; font-weight:700; line-height:1.18; text-wrap:balance}
+h1{font-size:26px; letter-spacing:-.03em; font-weight:800}
+h2{font-size:20px}
+h3{font-size:16px}
+p{margin:0}
+a{color:inherit}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+.muted{color:var(--ink-2)}
+.small{font-size:13px}
+.dim{color:var(--ink-3)}
+
+/* каркас */
+.app{display:grid; grid-template-columns:248px 1fr; min-height:100vh}
+aside{background:var(--ground); border-right:1px solid var(--line); padding:20px 14px; display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh; overflow:auto}
+.logo{display:flex; align-items:center; gap:9px; font-weight:800; font-size:20px; letter-spacing:-.04em; padding:6px 10px 18px}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 18%,transparent)}
+.navbtn{display:flex; align-items:center; gap:11px; width:100%; text-align:left; background:none; border:0; font-family:inherit; font-size:15px; font-weight:500; color:var(--ink-2); padding:10px 11px; border-radius:10px; cursor:pointer}
+.navbtn:hover{background:var(--surface); color:var(--ink)}
+.navbtn[aria-current="true"]{background:color-mix(in srgb,var(--blue) 12%,transparent); color:var(--blue); font-weight:700}
+.navbtn:focus-visible{outline:2px solid var(--blue); outline-offset:1px}
+.navbtn .ico{width:18px; text-align:center; flex:none; opacity:.9}
+.navbtn .badge{margin-left:auto; background:var(--crit); color:#fff; font-size:11px; font-weight:700; padding:1px 7px; border-radius:999px; font-family:"JetBrains Mono",monospace}
+.navsep{margin:10px 11px 6px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+.side-foot{margin-top:auto; border-top:1px solid var(--line); padding-top:14px}
+.user{display:flex; gap:10px; align-items:center; padding:8px 10px; width:100%; background:none; border:0; font-family:inherit; text-align:left; cursor:pointer; border-radius:10px; color:var(--ink)}
+.user:hover{background:var(--surface)}
+.ava{width:34px;height:34px;border-radius:10px; background:var(--blue); color:#fff; display:grid; place-items:center; font-weight:700; font-size:14px; flex:none}
+main{padding:26px clamp(16px,3vw,34px) 60px; max-width:1180px}
+.topbar{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border:0; cursor:pointer; font-family:inherit; font-weight:700; font-size:15px; padding:11px 18px; border-radius:11px; background:var(--blue); color:#fff; text-decoration:none; transition:transform .13s, box-shadow .13s}
+.btn:hover{transform:translateY(-1px); box-shadow:0 8px 20px -10px color-mix(in srgb,var(--blue) 80%,transparent)}
+.btn:focus-visible{outline:3px solid var(--sun); outline-offset:2px}
+.btn.sm{padding:9px 14px; font-size:14px; border-radius:10px}
+.btn.ghost{background:var(--surface-2); color:var(--ink)}
+.btn.line{background:transparent; color:var(--ink); border:1px solid var(--line)}
+.btn.sun{background:var(--sun); color:#0C1524}
+.btn:disabled{opacity:.45; cursor:default; transform:none; box-shadow:none}
+
+.card{background:var(--ground); border:1px solid var(--line); border-radius:16px; padding:22px}
+.grid{display:grid; gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:1fr}}
+@media(max-width:700px){.g2{grid-template-columns:1fr}}
+
+.kpi b{display:block; font-family:"JetBrains Mono",monospace; font-size:26px; font-weight:700; letter-spacing:-.02em; margin-top:8px; font-variant-numeric:tabular-nums}
+.pill{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; font-family:"JetBrains Mono",monospace}
+.pill.ok{background:color-mix(in srgb,var(--mint) 16%,transparent); color:var(--mint)}
+.pill.work{background:color-mix(in srgb,var(--blue) 14%,transparent); color:var(--blue)}
+.pill.wait{background:color-mix(in srgb,var(--warn) 18%,transparent); color:var(--warn)}
+.pill.due{background:color-mix(in srgb,var(--crit) 14%,transparent); color:var(--crit)}
+.pill.idle{background:var(--surface-2); color:var(--ink-3)}
+
+/* очередь действий */
+.todo{display:flex; flex-direction:column; gap:10px}
+.task{display:grid; grid-template-columns:44px 1fr auto; gap:14px; align-items:center; background:var(--ground); border:1px solid var(--line); border-left:4px solid var(--warn); border-radius:14px; padding:16px 18px}
+.task.crit{border-left-color:var(--crit)}
+.task.info{border-left-color:var(--blue)}
+.task .ti{width:44px;height:44px;border-radius:13px; background:var(--surface-2); display:grid; place-items:center; font-size:17px; color:var(--blue)}
+.task h3{font-size:15px}
+.task p{color:var(--ink-3); font-size:13px; margin-top:3px}
+@media(max-width:640px){
+  .task{grid-template-columns:44px 1fr; row-gap:12px}
+  .task .btn{grid-column:1 / -1; width:100%}
+}
+
+.list{display:flex; flex-direction:column}
+.item{display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; padding:16px 0; border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0; padding-bottom:0}
+.item:first-child{padding-top:0}
+.bar{height:7px; border-radius:99px; background:var(--surface-2); overflow:hidden; margin-top:10px}
+.bar i{display:block; height:100%; background:var(--blue); border-radius:99px; transition:width .5s ease}
+
+.stage{display:grid; grid-template-columns:26px 1fr auto; gap:14px; padding:16px 0; border-bottom:1px solid var(--line); align-items:start}
+.stage:last-child{border-bottom:0}
+.mark{width:22px;height:22px;border-radius:50%; border:2px solid var(--line); display:grid; place-items:center; font-size:12px; color:var(--ink-3); margin-top:2px}
+.mark.done{background:var(--mint); border-color:var(--mint); color:#fff}
+.mark.now{border-color:var(--blue); color:var(--blue); font-weight:700}
+.pay-right{text-align:right; display:flex; flex-direction:column; gap:8px; align-items:flex-end}
+
+table{width:100%; border-collapse:collapse; font-size:14px}
+.tablewrap{overflow-x:auto}
+th{text-align:left; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); padding:0 12px 10px 0; font-weight:700; white-space:nowrap}
+td{padding:13px 12px 13px 0; border-top:1px solid var(--line); vertical-align:middle}
+
+/* карты и способы оплаты */
+.method{display:grid; grid-template-columns:44px 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line)}
+.method:last-of-type{border-bottom:0}
+.brand{width:44px;height:30px;border-radius:7px; background:linear-gradient(135deg,#1B62FF,#0A2E8F); color:#fff; display:grid; place-items:center; font-family:"JetBrains Mono",monospace; font-size:9px; font-weight:700; letter-spacing:.04em}
+.brand.mir{background:linear-gradient(135deg,#0F9D74,#046B4E)}
+.brand.sbp{background:linear-gradient(135deg,#7A3FF2,#E8332A)}
+.switch{display:flex; align-items:flex-start; gap:12px; padding:16px; border:1px solid var(--line); border-radius:14px; background:var(--surface); cursor:pointer}
+.switch input{width:auto; margin-top:3px; accent-color:var(--blue); flex:none}
+.switch b{display:block; font-size:15px}
+.switch span{display:block; color:var(--ink-3); font-size:13px; margin-top:3px}
+
+.chat{display:flex; flex-direction:column; gap:12px; max-height:420px; overflow:auto; padding-right:6px}
+.msg{max-width:82%; padding:13px 16px; border-radius:14px; font-size:15px}
+.msg.ai{background:var(--surface); border:1px solid var(--line); border-bottom-left-radius:4px; align-self:flex-start}
+.msg.me{background:var(--blue); color:#fff; border-bottom-right-radius:4px; align-self:flex-end}
+.msg ul{margin:8px 0 0; padding-left:18px}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:14px}
+.chip{background:var(--surface-2); border:1px solid var(--line); color:var(--ink-2); border-radius:999px; padding:7px 13px; font-family:inherit; font-size:13px; cursor:pointer}
+.chip:hover{border-color:var(--blue); color:var(--blue)}
+.composer{display:flex; gap:8px; margin-top:14px}
+input,textarea,select{font-family:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:12px 14px; width:100%}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--blue)}
+label.f{display:block; margin-top:14px}
+label.f span{display:block; font-size:13px; color:var(--ink-3); margin-bottom:6px}
+
+.doc{display:grid; grid-template-columns:38px 1fr auto; gap:14px; align-items:center; padding:14px 0; border-bottom:1px solid var(--line)}
+.doc:last-child{border-bottom:0}
+.fileico{width:38px;height:44px; border-radius:7px; background:var(--surface-2); display:grid; place-items:center; font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; color:var(--ink-2)}
+.docacts{display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+@media(max-width:640px){
+  .doc{grid-template-columns:38px 1fr; row-gap:10px}
+  .docacts{grid-column:1 / -1; justify-content:flex-start}
+}
+
+.tier{display:flex; gap:6px; margin-top:18px}
+.tier div{flex:1; text-align:center; padding:12px 6px; border-radius:11px; background:var(--surface); border:1px solid var(--line)}
+.tier div.on{background:color-mix(in srgb,var(--blue) 12%,transparent); border-color:var(--blue)}
+.tier b{display:block; font-family:"JetBrains Mono",monospace; font-size:17px}
+.tier span{font-size:12px; color:var(--ink-3)}
+.ref{display:flex; gap:8px; margin-top:14px; flex-wrap:wrap}
+.reflink{flex:1; min-width:220px; background:var(--surface); border:1px dashed var(--line); border-radius:11px; padding:12px 14px; font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+.note{background:color-mix(in srgb,var(--sun) 20%,var(--ground)); border:1px solid color-mix(in srgb,var(--sun) 55%,var(--line)); border-radius:12px; padding:14px 16px; font-size:14px}
+:root[data-theme="dark"] .note, :root:not([data-theme="light"]) .note{background:color-mix(in srgb,var(--sun) 12%,var(--ground))}
+.hint{display:flex; gap:10px; align-items:flex-start; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:13px 15px; font-size:13px; color:var(--ink-2); margin-top:14px}
+.hint b{color:var(--ink)}
+
+/* модалки */
+.scrim{position:fixed; inset:0; background:rgba(8,13,23,.62); display:grid; place-items:center; padding:20px; z-index:100}
+.scrim[hidden]{display:none}
+.modal{background:var(--ground); border-radius:18px; padding:26px; max-width:460px; width:100%; box-shadow:var(--shadow); border:1px solid var(--line); max-height:90vh; overflow:auto}
+.rowline{display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px}
+.rowline:last-of-type{border-bottom:0}
+.opt{display:flex; gap:12px; align-items:center; border:1px solid var(--line); border-radius:13px; padding:13px 15px; cursor:pointer; margin-top:9px}
+.opt[data-on="1"]{border-color:var(--blue); background:color-mix(in srgb,var(--blue) 7%,transparent)}
+.opt small{display:block; color:var(--ink-3); font-size:12px; margin-top:2px}
+.spinner{width:34px;height:34px;border-radius:50%;border:3px solid var(--surface-2); border-top-color:var(--blue); animation:sp .8s linear infinite; margin:0 auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+.sigbox{border:1px dashed var(--line); border-radius:14px; background:var(--surface); padding:12px; margin-top:12px}
+.sigpad{width:100%; height:170px; border-radius:10px; background:var(--ground); touch-action:none; display:block; cursor:crosshair}
+.sigacts{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap}
+.sigacts .btn{width:auto}
+.sigsaved{display:flex; align-items:center; gap:16px; border:1px solid var(--line); border-radius:14px; padding:14px; background:var(--ground); margin-top:12px}
+.sigsaved img{height:56px; max-width:200px; object-fit:contain; filter:none}
+:root[data-theme="dark"] .sigsaved img, :root:not([data-theme="light"]) .sigsaved img{filter:invert(1) hue-rotate(180deg)}
+.sigstamp{border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:var(--surface); margin-top:14px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center}
+.sigstamp img{height:48px; max-width:170px; object-fit:contain}
+:root[data-theme="dark"] .sigstamp img, :root:not([data-theme="light"]) .sigstamp img{filter:invert(1) hue-rotate(180deg)}
+.sigstamp .sl{border-bottom:1px solid var(--ink-3); padding-bottom:4px; min-width:120px; text-align:center; color:var(--ink-3); font-size:12px}
+.code{display:flex; gap:8px; justify-content:center; margin-top:18px}
+.code input{width:52px; text-align:center; font-family:"JetBrains Mono",monospace; font-size:22px; font-weight:700; padding:12px 0}
+.ok-ico{width:56px;height:56px;border-radius:50%;background:var(--mint);color:#fff;display:grid;place-items:center;font-size:26px;margin:0 auto 16px}
+
+/* вход и регистрация */
+.auth{position:fixed; inset:0; z-index:300; background:var(--surface); display:grid; grid-template-columns:1.05fr .95fr; overflow:auto}
+.auth[hidden]{display:none}
+.authside{background:var(--ink); color:#F6F9FF; padding:clamp(28px,4vw,54px); display:flex; flex-direction:column; justify-content:space-between; gap:30px}
+.authside h2{color:#fff; font-size:clamp(24px,2.6vw,34px); letter-spacing:-.03em; max-width:16ch}
+.authside p{color:#A9B8CE; margin-top:14px; max-width:44ch}
+.authside .plus{display:flex; gap:12px; align-items:flex-start; margin-top:16px}
+.authside .plus b{display:block; color:#fff; font-size:15px}
+.authside .plus span{color:#A9B8CE; font-size:14px}
+.authside .pi{width:34px;height:34px;border-radius:11px;background:rgba(255,255,255,.1); display:grid; place-items:center; flex:none; color:var(--sun)}
+.authmain{display:grid; place-items:center; padding:clamp(24px,4vw,50px)}
+.authbox{width:100%; max-width:400px}
+.authtabs{display:flex; gap:6px; background:var(--surface-2); padding:4px; border-radius:13px; margin:22px 0 6px}
+.authtabs button{flex:1; background:none; border:0; font-family:inherit; font-size:14px; font-weight:700; color:var(--ink-2); padding:10px; border-radius:10px; cursor:pointer}
+.authtabs button[aria-pressed="true"]{background:var(--ground); color:var(--ink); box-shadow:var(--shadow)}
+@media(max-width:900px){
+  .auth{grid-template-columns:1fr}
+  .authside{order:2; padding:26px 18px calc(30px + env(safe-area-inset-bottom))}
+  .authside h2{font-size:22px}
+  .authmain{padding:calc(26px + env(safe-area-inset-top)) 18px 26px}
+}
+.toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--ink); color:var(--ground); padding:13px 20px; border-radius:12px; font-weight:600; font-size:14px; box-shadow:var(--shadow); z-index:200; max-width:92vw; text-align:center}
+.toast[hidden]{display:none}
+:root[data-theme="dark"] .toast, :root:not([data-theme="light"]) .toast{background:var(--surface-2); color:var(--ink); border:1px solid var(--line)}
+section[hidden]{display:none}
+
+.more-btn{display:none}
+.apptools{margin-left:auto; display:flex; align-items:center; gap:8px}
+.chipbtn{display:flex; align-items:center; gap:6px; height:38px; padding:0 12px; border-radius:12px; border:1px solid var(--line); background:var(--ground); font-family:inherit; font-size:13px; color:var(--ink); cursor:pointer}
+.chipbtn span{color:var(--mint)}
+.chipbtn b{font-family:"JetBrains Mono",monospace; font-weight:700; font-variant-numeric:tabular-nums}
+.iconbtn{width:38px; height:38px; border-radius:12px; border:1px solid var(--line); background:var(--ground); font-size:15px; color:var(--ink-2); cursor:pointer; position:relative}
+.iconbtn i{position:absolute; top:6px; right:6px; width:7px; height:7px; border-radius:50%; background:var(--crit)}
+.sheet{background:var(--ground); border-radius:22px 22px 0 0; padding:10px 16px calc(20px + env(safe-area-inset-bottom)); width:100%; max-width:560px; display:flex; flex-direction:column; gap:4px; border:1px solid var(--line); border-bottom:0}
+.grab{width:42px; height:4px; border-radius:99px; background:var(--line); margin:2px auto 12px}
+.sheetitem{display:grid; grid-template-columns:40px 1fr auto; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; border-radius:14px; padding:12px 8px; font-family:inherit; color:var(--ink); cursor:pointer}
+.sheetitem:active{background:var(--surface)}
+.sheetitem .si{width:40px;height:40px;border-radius:12px; background:var(--surface-2); display:grid; place-items:center; font-size:16px; color:var(--blue)}
+.sheetitem b{display:block; font-size:15px; font-weight:600}
+.sheetitem em{display:block; font-style:normal; font-size:13px; color:var(--ink-3); margin-top:2px}
+.sheetitem .chev{color:var(--ink-3); font-size:20px}
+
+/* ===== мобильный вид: приложение ===== */
+@media(max-width:900px){
+  body{background:var(--surface); padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  .app{display:block}
+  aside{
+    position:fixed; bottom:0; top:auto; left:0; right:0; height:auto; z-index:60;
+    display:flex; flex-direction:row; justify-content:space-between; align-items:stretch; gap:0; overflow:visible;
+    background:color-mix(in srgb,var(--ground) 95%,transparent); backdrop-filter:blur(16px);
+    border:0; border-top:1px solid var(--line); padding:6px 6px calc(6px + env(safe-area-inset-bottom));
+  }
+  aside .logo, aside .side-foot, aside .navsep{display:none}
+  aside .navbtn{flex:1 1 0; min-height:54px; flex-direction:column; gap:4px; padding:7px 2px; font-size:11px; font-weight:600; border-radius:14px; text-align:center; justify-content:center; white-space:nowrap}
+  aside .navbtn .ico{display:block; font-size:20px; width:auto; line-height:1; height:22px}
+  aside .navbtn[aria-current="true"]{background:none; color:var(--blue)}
+  aside .navbtn .badge{position:absolute; transform:translate(15px,-8px); padding:0 5px; font-size:10px}
+  aside .navbtn[data-tab="accept"],aside .navbtn[data-tab="docs"],
+  aside .navbtn[data-tab="loyalty"],aside .navbtn[data-tab="partner"],
+  aside .navbtn[data-tab="profile"]{display:none}
+  aside .more-btn{display:flex}
+  main{padding:0 0 26px; max-width:none}
+  .appbar{display:flex; align-items:center; gap:12px; padding:calc(12px + env(safe-area-inset-top)) 16px 12px; background:var(--ground); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:40}
+  .appbar .ava{width:36px;height:36px;border-radius:12px}
+  .appbar .t{font-weight:700; font-size:16px; letter-spacing:-.02em}
+  .appbar .s{font-size:12px; color:var(--ink-3)}
+  section[data-panel]{padding:16px}
+  .topbar{margin-bottom:16px}
+  .topbar h1{font-size:22px}
+  .topbar .btn{width:100%}
+  .grid.g4,.grid.g3{grid-template-columns:1fr 1fr}
+  .card.kpi{padding:16px}
+  .kpi b{font-size:21px}
+  .card{border-radius:18px; padding:18px}
+  .grid.g2>.card,.grid.g3>.card:not(.kpi){grid-column:1 / -1}
+  .btn{width:100%}
+  .pay-right .btn,.item .btn,.docacts .btn,.task .btn{width:auto}
+  .stage{grid-template-columns:22px 1fr; gap:12px}
+  .stage .pay-right{grid-column:1 / -1; flex-direction:row; justify-content:space-between; align-items:center; width:100%}
+  .modal{border-radius:22px 22px 0 0; align-self:flex-end; max-width:none; padding:22px 18px calc(22px + env(safe-area-inset-bottom))}
+  .scrim{place-items:end center; padding:0}
+  .tier{flex-wrap:wrap}
+  .tier div{flex:1 1 46%}
+  .chat{max-height:none}
+  .msg{max-width:92%}
+  .toast{left:16px; right:16px; bottom:calc(90px + env(safe-area-inset-bottom)); transform:none}
+}
+@media(min-width:901px){.appbar{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="auth" id="auth">
+  <div class="authmain">
+    <div class="authbox">
+      <div class="logo" style="padding:0 0 6px"><span class="dot"></span>NOVA</div>
+
+      <div id="authForms">
+        <div class="authtabs">
+          <button type="button" id="tabLogin" aria-pressed="true">Вход</button>
+          <button type="button" id="tabReg" aria-pressed="false">Регистрация</button>
+        </div>
+
+        <!-- ВХОД -->
+        <div id="formLogin">
+          <h1 style="margin-top:18px; font-size:24px">Вход в личный кабинет</h1>
+          <p class="small dim" style="margin-top:8px">Введите почту — пришлём код подтверждения. Пароль не нужен.</p>
+          <label class="f"><span>Почта</span><input id="loginMail" type="email" placeholder="mail@company.ru" value="buh@remeslo.ru"></label>
+          <button class="btn" style="width:100%; margin-top:18px" id="loginGo">Получить код</button>
+          <p class="small dim" style="margin-top:14px; text-align:center">Нет аккаунта? <a href="#" id="toReg" style="color:var(--blue); font-weight:600">Зарегистрироваться</a></p>
+        </div>
+
+        <!-- РЕГИСТРАЦИЯ -->
+        <div id="formReg" hidden>
+          <h1 style="margin-top:18px; font-size:24px">Регистрация</h1>
+          <p class="small dim" style="margin-top:8px">Займёт минуту. Эти данные подставятся в договоры и счета — потом их можно изменить в профиле.</p>
+          <label class="f"><span>Как к вам обращаться</span><input id="regName" placeholder="Имя и фамилия"></label>
+          <label class="f"><span>Компания</span><input id="regCompany" placeholder="ООО «Ромашка» или ИП"></label>
+          <label class="f"><span>Почта</span><input id="regMail" type="email" placeholder="mail@company.ru"></label>
+          <label class="f"><span>Телефон или Telegram для связи</span><input id="regPhone" placeholder="+7 900 000-00-00 или @nickname"></label>
+          <label class="switch" style="margin-top:14px; padding:12px 14px"><input type="checkbox" id="regAgree" checked><span><b style="font-size:14px">Согласен с условиями</b><span><a href="nova-legal.html#offer" target="_blank" style="color:var(--blue)">публичной офертой</a>, <a href="nova-legal.html#privacy" target="_blank" style="color:var(--blue)">политикой</a> и <a href="nova-legal.html#consent" target="_blank" style="color:var(--blue)">обработкой данных</a></span></span></label>
+          <button class="btn" style="width:100%; margin-top:16px" id="regGo">Создать кабинет</button>
+          <p class="small dim" style="margin-top:14px; text-align:center">Уже есть кабинет? <a href="#" id="toLogin" style="color:var(--blue); font-weight:600">Войти</a></p>
+        </div>
+      </div>
+
+      <!-- КОД -->
+      <div id="authCode" hidden>
+        <h1 style="margin-top:18px; font-size:24px">Введите код</h1>
+        <p class="small dim" style="margin-top:8px" id="codeTo">Отправили код на почту</p>
+        <div class="code"><input maxlength="1" inputmode="numeric" value="2"><input maxlength="1" inputmode="numeric" value="0"><input maxlength="1" inputmode="numeric" value="2"><input maxlength="1" inputmode="numeric" value="6"></div>
+        <button class="btn" style="width:100%; margin-top:20px" id="codeGo">Войти</button>
+        <button class="btn line" style="width:100%; margin-top:9px" data-toast="Код отправлен повторно">Отправить код ещё раз</button>
+        <button class="btn ghost" style="width:100%; margin-top:9px" id="codeBack">Назад</button>
+      </div>
+
+      <p class="small dim" style="margin-top:22px; text-align:center">Нажимая кнопку, вы соглашаетесь с <a href="nova-legal.html#offer" target="_blank" style="color:var(--blue)">офертой</a> и <a href="nova-legal.html#privacy" target="_blank" style="color:var(--blue)">политикой конфиденциальности</a>.</p>
+    </div>
+  </div>
+
+  <div class="authside">
+    <div>
+      <p class="eyebrow" style="color:#8FB4FF">Личный кабинет NOVA</p>
+      <h2 style="margin-top:14px">Вся работа с нами в одном окне</h2>
+      <p>Статусы задач, оплата по этапам, документы и приёмка. Договор и акты собираются и подписываются удалённо.</p>
+    </div>
+    <div>
+      <div class="plus"><span class="pi">₽</span><div><b>Оплата по этапам</b><span>Картой, через СБП или по счёту. Чек — сразу на почту</span></div></div>
+      <div class="plus"><span class="pi">▤</span><div><b>Документы сами</b><span>Договор, счёт и акт формируются автоматически</span></div></div>
+      <div class="plus"><span class="pi">◆</span><div><b>Скидки и бонусы</b><span>До 20% скидки и 5 000 ₽ за каждую рекомендацию</span></div></div>
+    </div>
+    <p class="small" style="color:#7A8AA3">Демо-режим: любой код подойдёт, данные не сохраняются.</p>
+  </div>
+</div>
+
+<div class="app" id="appShell" hidden>
+  <aside>
+    <div class="logo"><span class="dot"></span>NOVA</div>
+    <button class="navbtn" data-tab="home" aria-current="true"><span class="ico">◈</span>Обзор<span class="badge" id="navTodo">3</span></button>
+    <button class="navbtn" data-tab="projects"><span class="ico">▤</span>Проекты</button>
+    <button class="navbtn" data-tab="pay"><span class="ico">₽</span>Оплаты<span class="badge">1</span></button>
+    <button class="navbtn" data-tab="ai"><span class="ico">✳</span>ИИ-бриф</button>
+    <p class="navsep">Документы и бонусы</p>
+    <button class="navbtn" data-tab="accept"><span class="ico">✓</span>Приёмка<span class="badge">1</span></button>
+    <button class="navbtn" data-tab="docs"><span class="ico">▤</span>Документы<span class="badge">1</span></button>
+    <button class="navbtn" data-tab="loyalty"><span class="ico">◆</span>Скидки и бонусы</button>
+    <button class="navbtn" data-tab="partner"><span class="ico">◇</span>Партнёрка</button>
+    <button class="navbtn" data-tab="profile"><span class="ico">☺</span>Профиль</button>
+    <button class="navbtn more-btn" id="moreBtn" type="button"><span class="ico">☰</span>Ещё</button>
+    <div class="side-foot">
+      <button class="user" data-go="profile">
+        <div class="ava">АК</div>
+        <div><div style="font-weight:600; font-size:14px">Алексей Кузнецов</div><div class="small dim">ООО «Ремесло»</div></div>
+      </button>
+      <button class="user" data-go="loyalty">
+        <div class="ava" style="background:var(--sun); color:#0C1524">◆</div>
+        <div><div style="font-weight:600; font-size:14px" class="mono" id="balSide">5 000 ₽</div><div class="small dim">Бонусы · скидка 10%</div></div>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="appbar">
+      <div class="ava">АК</div>
+      <div><div class="t">Алексей</div><div class="s">ООО «Ремесло»</div></div>
+      <div class="apptools">
+        <button class="chipbtn" data-go="loyalty" aria-label="Бонусы и скидки"><span>◆</span><b id="balTop">5 000 ₽</b></button>
+        <button class="iconbtn" data-go="partner" aria-label="Партнёрская программа">◇</button>
+        <button class="iconbtn" data-toast="3 задачи ждут вас: приёмка этапа, счёт и подписание акта" aria-label="Уведомления">🔔<i></i></button>
+      </div>
+    </div>
+
+    <!-- ОБЗОР -->
+    <section data-panel="home">
+      <div class="topbar">
+        <div><p class="eyebrow">Кабинет клиента</p><h1 style="margin-top:8px">Привет, Алексей</h1></div>
+        <button class="btn" data-tab-go="ai">Поставить задачу</button>
+      </div>
+
+      <h2 style="margin-bottom:12px">Требует вашего действия</h2>
+      <div class="todo">
+        <div class="task crit">
+          <div class="ti">✓</div>
+          <div><h3>Принять этап «30 роликов, часть 3»</h3><p id="todoTimer">Автоприёмка через 2 дня 04 ч — после этого этап считается принятым</p></div>
+          <button class="btn sm" data-tab-go="accept">Проверить</button>
+        </div>
+        <div class="task">
+          <div class="ti">₽</div>
+          <div><h3>Оплатить счёт №2026-114-3 · 7 500 ₽</h3><p>Срок до 2 сентября. С учётом скидки и бонусов — 3 375 ₽</p></div>
+          <button class="btn sm" data-pay="7500" data-stage="Монтаж 30 роликов · этап 3">Оплатить</button>
+        </div>
+        <div class="task info">
+          <div class="ti">▤</div>
+          <div><h3>Подписать акт №2026-114-2</h3><p>Документ сформирован автоматически, подпись — кодом с почты</p></div>
+          <button class="btn sm ghost" data-tab-go="docs">Подписать</button>
+        </div>
+      </div>
+
+      <div class="grid g4" style="margin-top:22px">
+        <div class="card kpi"><p class="eyebrow">Активных проектов</p><b>3</b><p class="small dim">1 сдаётся сегодня</p></div>
+        <div class="card kpi"><p class="eyebrow">К оплате</p><b style="color:var(--warn)">15 000 ₽</b><p class="small dim">2 счёта</p></div>
+        <div class="card kpi"><p class="eyebrow">Бонусный баланс</p><b style="color:var(--mint)" id="balKpi">5 000 ₽</b><p class="small dim">Списывается при оплате</p></div>
+        <div class="card kpi"><p class="eyebrow">Ваша скидка</p><b>10%</b><p class="small dim">Уровень «Серебро»</p></div>
+      </div>
+
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px">
+            <h2>Проекты в работе</h2>
+            <button class="btn sm line" data-tab-go="projects">Все проекты</button>
+          </div>
+          <div class="list" style="margin-top:18px">
+            <div class="item"><div><h3>Монтаж 30 роликов · август</h3><p class="small dim" style="margin-top:4px">Этап 3 из 4 · сдан 28 августа</p><div class="bar"><i style="width:75%"></i></div></div><span class="pill wait">НА ПРИЁМКЕ</span></div>
+            <div class="item"><div><h3>Лендинг «Ремесло PRO»</h3><p class="small dim" style="margin-top:4px">Этап 2 из 3 · сдача 1 сентября</p><div class="bar"><i style="width:55%"></i></div></div><span class="pill work">В РАБОТЕ</span></div>
+            <div class="item"><div><h3>Презентация для инвесторов</h3><p class="small dim" style="margin-top:4px">Этап 1 из 3 · согласование ТЗ</p><div class="bar"><i style="width:20%"></i></div></div><span class="pill idle">БРИФ</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Что дальше по графику</h2>
+          <div class="list" style="margin-top:18px">
+            <div class="item"><div><h3>Лендинг · дизайн и вёрстка</h3><p class="small dim" style="margin-top:4px">Сдадим и выставим счёт автоматически</p></div><span class="pill work">1 СЕН</span></div>
+            <div class="item"><div><h3>Созвон по презентации</h3><p class="small dim" style="margin-top:4px">Согласование структуры, 30 минут</p></div><span class="pill idle">3 СЕН</span></div>
+            <div class="item"><div><h3>Акт за август</h3><p class="small dim" style="margin-top:4px">Сформируется и уйдёт на почту сам</p></div><span class="pill idle">31 АВГ</span></div>
+            <div class="item"><div><h3>Пересчёт уровня лояльности</h3><p class="small dim" style="margin-top:4px">До «Золота» осталось 157 500 ₽</p></div><span class="pill idle">1 СЕН</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПРОЕКТЫ -->
+    <section data-panel="projects" hidden>
+      <div class="topbar"><div><p class="eyebrow">Проекты</p><h1 style="margin-top:8px">Задачи и этапы</h1></div><button class="btn ghost" data-tab-go="ai">Новая задача</button></div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap">
+          <div><h2>Монтаж 30 роликов · август</h2><p class="small dim" style="margin-top:6px">Договор №2026-114 от 18.08.2026 · 15 000 ₽ · менеджер Дарья</p></div>
+          <span class="pill wait">НА ПРИЁМКЕ</span>
+        </div>
+        <div style="margin-top:18px">
+          <div class="stage"><div class="mark done">✓</div><div><h3>Согласование ТЗ</h3><p class="small dim" style="margin-top:4px">Формат, референсы, стиль субтитров — зафиксировано 18 августа</p></div><div class="pay-right"><span class="pill ok">ЗАКРЫТ</span><span class="mono small dim">0 ₽</span></div></div>
+          <div class="stage"><div class="mark done">✓</div><div><h3>Первые 10 роликов</h3><p class="small dim" style="margin-top:4px">Принято 22 августа · акт ждёт вашей подписи</p></div><div class="pay-right"><span class="pill ok">ОПЛАЧЕНО</span><span class="mono small dim">5 000 ₽</span></div></div>
+          <div class="stage"><div class="mark now">3</div><div><h3>Остальные 20 роликов</h3><p class="small dim" style="margin-top:4px">Сдано 28 августа, ждём приёмку. Счёт уже выставлен</p></div><div class="pay-right"><button class="btn sm" data-pay="7500" data-stage="Монтаж 30 роликов · этап 3">Оплатить 7 500 ₽</button><span class="small dim">до 2 сентября</span></div></div>
+          <div class="stage"><div class="mark">4</div><div><h3>Раунд правок и передача исходников</h3><p class="small dim" style="margin-top:4px">Включён в стоимость, стартует после приёмки</p></div><div class="pay-right"><span class="pill idle">ПОЗЖЕ</span><span class="mono small dim">2 500 ₽</span></div></div>
+        </div>
+        <div class="hint"><span>💬</span><div><b>Вопрос по проекту?</b> Напишите менеджеру прямо здесь — переписка хранится вместе с задачей, ничего не теряется в мессенджерах.</div></div>
+        <div class="composer"><input placeholder="Сообщение по проекту…"><button class="btn" data-toast="Сообщение отправлено менеджеру Дарье">Отправить</button></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap">
+          <div><h2>Лендинг «Ремесло PRO»</h2><p class="small dim" style="margin-top:6px">Договор №2026-118 от 26.08.2026 · 15 000 ₽ · менеджер Дарья</p></div>
+          <span class="pill work">В РАБОТЕ</span>
+        </div>
+        <div style="margin-top:18px">
+          <div class="stage"><div class="mark done">✓</div><div><h3>ТЗ и прототип</h3><p class="small dim" style="margin-top:4px">Структура и офферы согласованы</p></div><div class="pay-right"><span class="pill ok">ОПЛАЧЕНО</span><span class="mono small dim">5 000 ₽</span></div></div>
+          <div class="stage"><div class="mark now">2</div><div><h3>Дизайн и вёрстка</h3><p class="small dim" style="margin-top:4px">Сдача 1 сентября · готово 60%</p><div class="bar" style="max-width:260px"><i style="width:60%"></i></div></div><div class="pay-right"><span class="pill work">В РАБОТЕ</span><span class="mono small dim">7 500 ₽</span></div></div>
+          <div class="stage"><div class="mark">3</div><div><h3>Публикация, аналитика, домен</h3><p class="small dim" style="margin-top:4px">Финальный этап, один рабочий день</p></div><div class="pay-right"><span class="pill idle">ПОЗЖЕ</span><span class="mono small dim">2 500 ₽</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ОПЛАТЫ -->
+    <section data-panel="pay" hidden>
+      <div class="topbar"><div><p class="eyebrow">Финансы</p><h1 style="margin-top:8px">Оплаты и способы оплаты</h1></div></div>
+
+      <div class="grid g3">
+        <div class="card kpi"><p class="eyebrow">К оплате сейчас</p><b style="color:var(--warn)">15 000 ₽</b><p class="small dim">2 счёта</p></div>
+        <div class="card kpi"><p class="eyebrow">Оплачено за год</p><b>142 500 ₽</b><p class="small dim">18 этапов</p></div>
+        <div class="card kpi"><p class="eyebrow">Сэкономлено</p><b style="color:var(--mint)">21 300 ₽</b><p class="small dim">Скидка и бонусы</p></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Счета к оплате</h2>
+        <p class="small dim" style="margin-top:6px">Счёт выставляется автоматически в момент сдачи этапа. Оплата проходит через ЮKassa, чек по 54-ФЗ приходит на почту сразу после платежа.</p>
+        <div class="list" style="margin-top:18px">
+          <div class="item"><div><h3>Монтаж 30 роликов · этап 3</h3><p class="small dim" style="margin-top:4px">Счёт №2026-114-3 · выставлен 28 августа · срок до 2 сентября</p></div><div class="pay-right"><span class="mono" style="font-weight:700; font-size:17px">7 500 ₽</span><button class="btn sm" data-pay="7500" data-stage="Монтаж 30 роликов · этап 3">Оплатить</button></div></div>
+          <div class="item"><div><h3>Лендинг «Ремесло PRO» · этап 2</h3><p class="small dim" style="margin-top:4px">Выставится автоматически после сдачи 1 сентября</p></div><div class="pay-right"><span class="mono" style="font-weight:700; font-size:17px">7 500 ₽</span><button class="btn sm ghost" disabled>Ждёт сдачи</button></div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap">
+          <h2>Способы оплаты</h2>
+          <button class="btn sm line" id="addCard">Привязать карту</button>
+        </div>
+        <p class="small dim" style="margin-top:6px">Данные карты хранятся на стороне ЮKassa, мы их не видим и не храним.</p>
+        <div id="methods" style="margin-top:14px"></div>
+
+        <label class="switch" style="margin-top:16px">
+          <input type="checkbox" id="autopay">
+          <span><b>Автосписание по этапам</b><span>После приёмки этапа сумма списывается с основной карты автоматически. Мы предупреждаем за сутки, любой платёж можно отменить до списания.</span></span>
+        </label>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>История платежей</h2>
+        <div class="tablewrap" style="margin-top:16px">
+          <table>
+            <tr><th>Дата</th><th>Назначение</th><th>Сумма</th><th>Способ</th><th>Статус</th><th>Чек</th></tr>
+            <tr><td class="mono">26.08.2026</td><td>Лендинг · этап 1</td><td class="mono">5 000 ₽</td><td>Карта •••4417</td><td><span class="pill ok">ПРОВЕДЁН</span></td><td><button class="btn sm line" data-toast="Чек отправлен на dahaahaa1998@gmail.com">Чек</button></td></tr>
+            <tr><td class="mono">22.08.2026</td><td>30 роликов · этап 2</td><td class="mono">5 000 ₽</td><td>Карта •••4417</td><td><span class="pill ok">ПРОВЕДЁН</span></td><td><button class="btn sm line" data-toast="Чек отправлен на почту">Чек</button></td></tr>
+            <tr><td class="mono">05.08.2026</td><td>Обложки YouTube, 10 шт.</td><td class="mono">2 500 ₽</td><td>Бонусы</td><td><span class="pill ok">ПРОВЕДЁН</span></td><td><button class="btn sm line" data-toast="Чек отправлен на почту">Чек</button></td></tr>
+            <tr><td class="mono">28.07.2026</td><td>Презентация, 50 слайдов</td><td class="mono">10 000 ₽</td><td>Счёт, юрлицо</td><td><span class="pill ok">ПРОВЕДЁН</span></td><td><button class="btn sm line" data-toast="Платёжное поручение скачано">ПП</button></td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПРИЁМКА -->
+    <section data-panel="accept" hidden>
+      <div class="topbar"><div><p class="eyebrow">Приёмка</p><h1 style="margin-top:8px">Работы на проверке</h1></div></div>
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:flex-start">
+          <div><h2>Монтаж 30 роликов · этап 3</h2><p class="small dim" style="margin-top:6px">Сдано 28 августа в 19:40 · 20 файлов, 2,4 ГБ</p></div>
+          <span class="pill due" id="acceptTimer">АВТОПРИЁМКА ЧЕРЕЗ 2 ДНЯ</span>
+        </div>
+        <div class="note" style="margin-top:16px">
+          <b>Предпроверка по вашему ТЗ.</b> Хронометраж, формат 9:16, субтитры и обложки — соответствуют. Отдельно посмотрите 2 ролика, где менялся исходный звук.
+        </div>
+        <div class="list" style="margin-top:18px">
+          <div class="item"><div><h3>Посмотреть материалы</h3><p class="small dim" style="margin-top:4px">Все 20 роликов в одном окне, комментарии по таймкоду</p></div><button class="btn sm line" data-toast="Открываем плеер с материалами этапа">Открыть</button></div>
+          <div class="item"><div><h3>Отправить правки</h3><p class="small dim" style="margin-top:4px">Один раунд входит в стоимость. Соберите замечания одним списком</p></div><button class="btn sm ghost" data-toast="Форма правок открыта — замечания уйдут менеджеру одним списком">Написать правки</button></div>
+          <div class="item"><div><h3>Принять этап</h3><p class="small dim" style="margin-top:4px">Мы сформируем акт, отправим его на почту и откроем финальный этап</p></div><button class="btn sm" data-accept>Принять работу</button></div>
+        </div>
+        <div class="hint"><span>ℹ️</span><div>Если ничего не сделать до истечения срока, этап примется автоматически — так проект не зависает. Отменить автоприёмку можно, отправив правки.</div></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>История приёмок</h2>
+        <div class="list" style="margin-top:18px">
+          <div class="item"><div><h3>30 роликов · этап 2</h3><p class="small dim" style="margin-top:4px">Принято 22 августа · акт сформирован</p></div><span class="pill ok">ПРИНЯТО</span></div>
+          <div class="item"><div><h3>Лендинг · этап 1</h3><p class="small dim" style="margin-top:4px">Принято 26 августа после одного раунда правок</p></div><span class="pill ok">ПРИНЯТО</span></div>
+          <div class="item"><div><h3>Презентация, 50 слайдов</h3><p class="small dim" style="margin-top:4px">Принято 28 июля · акт подписан</p></div><span class="pill ok">ПРИНЯТО</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ИИ-БРИФ -->
+    <section data-panel="ai" hidden>
+      <div class="topbar"><div><p class="eyebrow">ИИ-помощник</p><h1 style="margin-top:8px">Соберём точное ТЗ за 5 минут</h1></div><span class="pill work">ОНЛАЙН</span></div>
+      <div class="grid g2" style="align-items:start">
+        <div class="card">
+          <div class="chat" id="chat">
+            <div class="msg ai"><b>Привет! Я помогу собрать ТЗ.</b><br>Опишите задачу своими словами — задам недостающие вопросы, предложу варианты и оформлю всё в документ, который уйдёт в производство.</div>
+            <div class="msg ai">С чего начнём?</div>
+          </div>
+          <div class="chips">
+            <button class="chip" data-ask="Нужны ролики для соцсетей">Ролики для соцсетей</button>
+            <button class="chip" data-ask="Нужен лендинг">Лендинг</button>
+            <button class="chip" data-ask="Нужна презентация">Презентация</button>
+            <button class="chip" data-ask="Нужен сервис для бизнеса">Сервис для бизнеса</button>
+          </div>
+          <form class="composer" id="composer">
+            <input id="ask" placeholder="Опишите задачу…" autocomplete="off">
+            <button class="btn" type="submit">Отправить</button>
+          </form>
+        </div>
+        <div class="card">
+          <p class="eyebrow">Черновик ТЗ</p>
+          <h2 style="margin-top:10px">Заполняется по ходу разговора</h2>
+          <div style="margin-top:18px">
+            <div class="rowline"><span class="dim">Тип задачи</span><b id="tzType">—</b></div>
+            <div class="rowline"><span class="dim">Объём</span><b id="tzVol">—</b></div>
+            <div class="rowline"><span class="dim">Срок</span><b id="tzTerm">—</b></div>
+            <div class="rowline"><span class="dim">Ориентир по цене</span><b class="mono" id="tzPrice">—</b></div>
+            <div class="rowline"><span class="dim">Готовность ТЗ</span><b id="tzReady">10%</b></div>
+          </div>
+          <div class="bar" style="margin-top:14px"><i id="tzBar" style="width:10%"></i></div>
+          <button class="btn" style="width:100%; margin-top:20px" data-toast="ТЗ отправлено менеджеру. Договор соберётся автоматически после согласования сметы">Отправить ТЗ в работу</button>
+          <p class="small dim" style="margin-top:12px">После согласования сметы договор и счёт на первый этап формируются автоматически и приходят на почту.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ДОКУМЕНТЫ -->
+    <section data-panel="docs" hidden>
+      <div class="topbar"><div><p class="eyebrow">Документы</p><h1 style="margin-top:8px">Договоры, счета и акты</h1></div><button class="btn ghost" data-toast="Пакет документов за август отправлен на dahaahaa1998@gmail.com">Выгрузить за период</button></div>
+
+      <div class="note">
+        <b>Документы собираются автоматически.</b> Договор формируется после согласования сметы, счёт — в момент сдачи этапа, акт — сразу после приёмки. Всё уходит на вашу почту и вашему бухгалтеру, ничего запрашивать не нужно.
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Ждут вашей подписи</h2>
+        <div style="margin-top:14px">
+          <div class="doc">
+            <div class="fileico">PDF</div>
+            <div><h3>Акт №2026-114-2 · 30 роликов, этап 2</h3><p class="small dim" style="margin-top:3px">Сформирован 22.08.2026 · подпись кодом из письма</p></div>
+            <div class="docacts"><span class="pill wait">ЖДЁТ ПОДПИСИ</span><button class="btn sm" data-sign="Акт №2026-114-2">Подписать</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Все документы</h2>
+        <div style="margin-top:14px" id="docList">
+          <div class="doc"><div class="fileico">PDF</div><div><h3>Договор №2026-118 · Лендинг</h3><p class="small dim" style="margin-top:3px">26.08.2026 · подписан обеими сторонами</p></div><div class="docacts"><span class="pill ok">ПОДПИСАН</span><button class="btn sm line" data-toast="Файл скачан">Скачать</button></div></div>
+          <div class="doc"><div class="fileico">PDF</div><div><h3>Счёт №2026-114-3</h3><p class="small dim" style="margin-top:3px">28.08.2026 · к оплате 7 500 ₽</p></div><div class="docacts"><span class="pill wait">К ОПЛАТЕ</span><button class="btn sm line" data-toast="Счёт отправлен на почту">На почту</button></div></div>
+          <div class="doc"><div class="fileico">PDF</div><div><h3>Акт №2026-114-3 · этап 3</h3><p class="small dim" style="margin-top:3px">Сформируется автоматически после приёмки</p></div><div class="docacts"><span class="pill idle">ПОСЛЕ ПРИЁМКИ</span><button class="btn sm line" disabled>Скачать</button></div></div>
+          <div class="doc"><div class="fileico">PDF</div><div><h3>Договор №2026-114 · Монтаж роликов</h3><p class="small dim" style="margin-top:3px">18.08.2026 · подписан обеими сторонами</p></div><div class="docacts"><span class="pill ok">ПОДПИСАН</span><button class="btn sm line" data-toast="Файл скачан">Скачать</button></div></div>
+          <div class="doc"><div class="fileico">PDF</div><div><h3>Акт №2026-097 · Презентация</h3><p class="small dim" style="margin-top:3px">28.07.2026 · подписан</p></div><div class="docacts"><span class="pill ok">ПОДПИСАН</span><button class="btn sm line" data-toast="Файл скачан">Скачать</button></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ЛОЯЛЬНОСТЬ -->
+    <section data-panel="loyalty" hidden>
+      <div class="topbar"><div><p class="eyebrow">Лояльность</p><h1 style="margin-top:8px">Скидки и бонусы</h1></div><span class="pill work">УРОВЕНЬ: СЕРЕБРО</span></div>
+      <div class="card">
+        <h2>Ваш уровень</h2>
+        <p class="muted" style="margin-top:8px">Скидка применяется автоматически ко всем новым задачам и к подписке. Уровень пересчитывается по сумме работ за 12 месяцев.</p>
+        <div class="tier">
+          <div><b>0%</b><span>Старт</span></div>
+          <div class="on"><b>10%</b><span>Серебро · вы здесь</span></div>
+          <div><b>15%</b><span>Золото · от 300 000 ₽</span></div>
+          <div><b>20%</b><span>Платина · от 600 000 ₽</span></div>
+        </div>
+        <p class="small dim" style="margin-top:16px">Оплачено за 12 месяцев: <b class="mono">142 500 ₽</b> · до «Золота» осталось <b class="mono">157 500 ₽</b></p>
+        <div class="bar"><i style="width:47%"></i></div>
+      </div>
+
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card">
+          <h2>Бонусный баланс</h2>
+          <p class="mono" style="font-size:32px; font-weight:700; margin-top:12px; color:var(--mint)" id="balBig">5 000 ₽</p>
+          <p class="small dim" style="margin-top:8px">Работают как деньги: закрывают до 50% любого счёта, не сгорают.</p>
+          <div class="list" style="margin-top:18px">
+            <div class="item"><div><h3>Бонус за рекомендацию</h3><p class="small dim" style="margin-top:3px">«Северный кофе» пришёл по вашей ссылке · 24.08.2026</p></div><span class="mono" style="color:var(--mint); font-weight:700">+5 000 ₽</span></div>
+            <div class="item"><div><h3>Оплата обложек бонусами</h3><p class="small dim" style="margin-top:3px">05.08.2026</p></div><span class="mono dim" style="font-weight:700">−2 500 ₽</span></div>
+            <div class="item"><div><h3>Бонус за отзыв</h3><p class="small dim" style="margin-top:3px">02.08.2026</p></div><span class="mono" style="color:var(--mint); font-weight:700">+2 500 ₽</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Как получить больше</h2>
+          <div class="list" style="margin-top:18px">
+            <div class="item"><div><h3>Рекомендация</h3><p class="small dim" style="margin-top:3px">5 000 ₽ за каждого клиента по вашей ссылке</p></div><button class="btn sm ghost" data-tab-go="partner">К партнёрке</button></div>
+            <div class="item"><div><h3>Подписка вместо разовых задач</h3><p class="small dim" style="margin-top:3px">−15% к цене каждой работы внутри тарифа</p></div><button class="btn sm line" data-toast="Менеджер свяжется и подберёт тариф подписки">Узнать</button></div>
+            <div class="item"><div><h3>Предоплата пакета этапов</h3><p class="small dim" style="margin-top:3px">−7% при оплате всех этапов проекта сразу</p></div><button class="btn sm line" data-toast="Пересчитаем проект с предоплатой и пришлём счёт">Посчитать</button></div>
+            <div class="item"><div><h3>Отзыв или кейс</h3><p class="small dim" style="margin-top:3px">2 500 ₽ за развёрнутый отзыв</p></div><button class="btn sm line" data-toast="Спасибо! Форма отзыва открыта">Оставить</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ПАРТНЁРКА -->
+    <section data-panel="partner" hidden>
+      <div class="topbar"><div><p class="eyebrow">Партнёрская программа</p><h1 style="margin-top:8px">Рекомендуйте и получайте 5 000 ₽</h1></div></div>
+      <div class="card">
+        <p class="muted" style="font-size:16px">За каждого клиента, который пришёл по вашей ссылке и оплатил первый этап, на бонусный баланс приходит <b style="color:var(--mint)">5 000 ₽</b>. Бонусами можно закрыть до половины любого счёта. Ограничений по количеству приглашённых нет.</p>
+        <div class="ref">
+          <div class="reflink" id="reflink">nova.ru/?ref=remeslo-4417</div>
+          <button class="btn" data-copy>Скопировать ссылку</button>
+          <button class="btn ghost" data-toast="Приглашение отправлено на почту">Пригласить по почте</button>
+        </div>
+      </div>
+
+      <div class="grid g3" style="margin-top:14px">
+        <div class="card kpi"><p class="eyebrow">Переходов</p><b>34</b><p class="small dim">За 90 дней</p></div>
+        <div class="card kpi"><p class="eyebrow">Стали клиентами</p><b>1</b><p class="small dim">Ещё 2 в переписке</p></div>
+        <div class="card kpi"><p class="eyebrow">Начислено бонусов</p><b style="color:var(--mint)">5 000 ₽</b><p class="small dim">Всего за программу</p></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Приглашённые</h2>
+        <div class="tablewrap" style="margin-top:16px">
+          <table>
+            <tr><th>Компания</th><th>Переход</th><th>Статус</th><th>Бонус</th></tr>
+            <tr><td>Северный кофе</td><td class="mono">18.08.2026</td><td><span class="pill ok">ОПЛАТИЛ ЭТАП</span></td><td class="mono" style="color:var(--mint); font-weight:700">+5 000 ₽</td></tr>
+            <tr><td>Студия «Полёт»</td><td class="mono">21.08.2026</td><td><span class="pill work">СОГЛАСУЕТ ТЗ</span></td><td class="mono dim">ожидает</td></tr>
+            <tr><td>ИП Соколова</td><td class="mono">25.08.2026</td><td><span class="pill wait">ЗАЯВКА</span></td><td class="mono dim">ожидает</td></tr>
+          </table>
+        </div>
+        <p class="small dim" style="margin-top:16px">Бонус приходит в течение суток после оплаты приглашённым первого этапа.</p>
+      </div>
+    </section>
+
+    <!-- ПРОФИЛЬ -->
+    <section data-panel="profile" hidden>
+      <div class="topbar"><div><p class="eyebrow">Профиль</p><h1 style="margin-top:8px">Данные и уведомления</h1></div></div>
+      <div class="grid g2" style="align-items:start">
+        <div class="card">
+          <h2>Плательщик</h2>
+          <p class="small dim" style="margin-top:6px">Эти данные подставляются в договоры, счета и акты автоматически.</p>
+          <label class="f"><span>Тип плательщика</span>
+            <select><option>Юридическое лицо</option><option>Индивидуальный предприниматель</option><option>Физическое лицо</option></select>
+          </label>
+          <label class="f"><span>Наименование</span><input value="ООО «Ремесло»"></label>
+          <label class="f"><span>ИНН / КПП</span><input value="7701234567 / 770101001"></label>
+          <label class="f"><span>Подписант и должность</span><input value="Кузнецов Алексей Петрович, генеральный директор"></label>
+          <label class="f"><span>Почта для документов</span><input value="buh@remeslo.ru"></label>
+          <button class="btn" style="margin-top:18px" data-toast="Реквизиты сохранены — новые документы соберутся с ними">Сохранить</button>
+        </div>
+
+        <div class="card">
+          <h2>Моя подпись</h2>
+          <p class="small dim" style="margin-top:6px">Нарисуйте подпись один раз — дальше она будет автоматически проставляться в актах и договорах в момент подписания.</p>
+
+          <div id="sigEmpty">
+            <div class="sigbox">
+              <canvas class="sigpad" id="sigPad" width="900" height="340"></canvas>
+            </div>
+            <div class="sigacts">
+              <button class="btn sm" id="sigSave">Сохранить подпись</button>
+              <button class="btn sm line" id="sigClear">Очистить</button>
+              <label class="btn sm ghost" style="cursor:pointer">Загрузить файл<input type="file" id="sigFile" accept="image/*" hidden></label>
+            </div>
+            <p class="small dim" style="margin-top:10px">Рисуйте мышью или пальцем. Можно загрузить скан подписи на белом фоне — PNG или JPG.</p>
+          </div>
+
+          <div id="sigHas" hidden>
+            <div class="sigsaved">
+              <img id="sigImg" alt="Ваша подпись">
+              <div>
+                <b style="display:block">Подпись сохранена</b>
+                <span class="small dim">Проставляется автоматически при подписании</span>
+              </div>
+            </div>
+            <div class="sigacts">
+              <button class="btn sm line" id="sigRedo">Изменить подпись</button>
+              <button class="btn sm ghost" id="sigDel">Удалить</button>
+            </div>
+          </div>
+
+          <label class="switch" style="margin-top:14px"><input type="checkbox" id="sigAuto" checked><span><b>Подставлять подпись автоматически</b><span>В момент подтверждения кодом подпись и дата проставляются в документ без вашего участия</span></span></label>
+          <div class="hint"><span>🔐</span><div><b>Как это законно.</b> Подпись-картинка — это оформление документа. Юридическую силу даёт подтверждение кодом из СМС: простая электронная подпись по 63-ФЗ, условия её применения зафиксированы в договоре.</div></div>
+        </div>
+
+        <div class="card">
+          <h2>Уведомления</h2>
+          <p class="small dim" style="margin-top:6px">Напоминаем только о том, что требует вашего решения.</p>
+          <label class="switch" style="margin-top:14px"><input type="checkbox" checked><span><b>Сдача этапа и приёмка</b><span>Письмо и пуш в момент сдачи, напоминание за сутки до автоприёмки</span></span></label>
+          <label class="switch" style="margin-top:10px"><input type="checkbox" checked><span><b>Счета и платежи</b><span>Новый счёт, успешная оплата, чек по 54-ФЗ</span></span></label>
+          <label class="switch" style="margin-top:10px"><input type="checkbox" checked><span><b>Документы на подпись</b><span>Акт сформирован и ждёт подписи</span></span></label>
+          <label class="switch" style="margin-top:10px"><input type="checkbox"><span><b>Новости и предложения</b><span>Скидки, новые услуги, кейсы. Не чаще раза в месяц</span></span></label>
+          <button class="btn ghost" style="margin-top:18px" data-toast="Настройки уведомлений сохранены">Сохранить</button>
+          <div style="border-top:1px solid var(--line); margin-top:20px; padding-top:18px">
+            <button class="btn line" id="logout" style="width:100%">Выйти из кабинета</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ОПЛАТА -->
+<div class="scrim" id="payModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="payTitle">
+    <div id="payStep1">
+      <p class="eyebrow">Оплата этапа</p>
+      <h2 id="payTitle" style="margin-top:10px">Монтаж 30 роликов · этап 3</h2>
+      <div style="margin-top:18px">
+        <div class="rowline"><span class="dim">Сумма этапа</span><b class="mono" id="paySum">7 500 ₽</b></div>
+        <div class="rowline"><span class="dim">Скидка «Серебро», 10%</span><b class="mono" style="color:var(--mint)" id="payDisc">−750 ₽</b></div>
+        <div class="rowline"><span class="dim">Списание бонусов</span><b class="mono" style="color:var(--mint)" id="payBonus">−3 375 ₽</b></div>
+        <div class="rowline" style="border-top:1px solid var(--line); padding-top:14px; margin-top:6px"><b>К оплате</b><b class="mono" style="font-size:20px" id="payTotal">3 375 ₽</b></div>
+      </div>
+      <label class="switch" style="margin-top:16px; padding:12px 14px"><input type="checkbox" id="useBonus" checked><span><b>Списать бонусы</b><span>Можно закрыть до 50% суммы счёта</span></span></label>
+
+      <p class="eyebrow" style="margin-top:20px">Способ оплаты</p>
+      <div id="payMethods"></div>
+
+      <div style="display:grid; gap:9px; margin-top:18px">
+        <button class="btn" id="payGo">Оплатить</button>
+        <button class="btn ghost" data-close>Отмена</button>
+      </div>
+      <p class="small dim" style="margin-top:14px">Платёж проходит через ЮKassa. Чек по 54-ФЗ и акт придут на почту автоматически.</p>
+    </div>
+
+    <div id="payStep2" hidden style="text-align:center; padding:22px 0">
+      <div class="spinner"></div>
+      <h2 style="margin-top:20px">Переходим в ЮKassa</h2>
+      <p class="small dim" style="margin-top:8px">Подтвердите платёж в приложении банка. Не закрывайте окно.</p>
+    </div>
+
+    <div id="payStep3" hidden style="text-align:center; padding:10px 0">
+      <div class="ok-ico">✓</div>
+      <h2>Оплачено</h2>
+      <p class="muted" style="margin-top:10px" id="payDone">3 375 ₽ списаны с карты •••4417.</p>
+      <div style="text-align:left; margin-top:18px">
+        <div class="rowline"><span class="dim">Чек по 54-ФЗ</span><b>отправлен на почту</b></div>
+        <div class="rowline"><span class="dim">Акт по этапу</span><b>сформирован</b></div>
+        <div class="rowline"><span class="dim">Следующий этап</span><b>открыт в работу</b></div>
+      </div>
+      <div style="display:grid; gap:9px; margin-top:20px">
+        <button class="btn" data-close>Готово</button>
+        <button class="btn line" data-go="docs" data-close-too>Открыть документы</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ПРИВЯЗКА КАРТЫ -->
+<div class="scrim" id="cardModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div id="cardStep1">
+      <p class="eyebrow">ЮKassa</p>
+      <h2 style="margin-top:10px">Привязка карты</h2>
+      <p class="small dim" style="margin-top:8px">Спишем и сразу вернём 1 ₽ для проверки карты. Реквизиты хранятся на стороне ЮKassa.</p>
+      <label class="f"><span>Номер карты</span><input id="cardNum" inputmode="numeric" placeholder="0000 0000 0000 0000" maxlength="19"></label>
+      <div style="display:flex; gap:10px">
+        <label class="f" style="flex:1"><span>Срок</span><input id="cardExp" placeholder="ММ/ГГ" maxlength="5"></label>
+        <label class="f" style="flex:1"><span>CVC</span><input id="cardCvc" placeholder="•••" maxlength="3"></label>
+      </div>
+      <div style="display:grid; gap:9px; margin-top:18px">
+        <button class="btn" id="cardGo">Привязать карту</button>
+        <button class="btn ghost" data-close>Отмена</button>
+      </div>
+    </div>
+    <div id="cardStep2" hidden style="text-align:center; padding:10px 0">
+      <div class="ok-ico">✓</div>
+      <h2>Карта привязана</h2>
+      <p class="muted" style="margin-top:10px" id="cardDone">Карта •••0000 добавлена как основная.</p>
+      <button class="btn" style="margin-top:20px" data-close>Готово</button>
+    </div>
+  </div>
+</div>
+
+<!-- ПОДПИСАНИЕ -->
+<div class="scrim" id="signModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div id="signStep1">
+      <p class="eyebrow">Подписание документа</p>
+      <h2 style="margin-top:10px" id="signTitle">Акт №2026-114-2</h2>
+      <p class="small dim" style="margin-top:8px">Код подтверждения отправлен на вашу почту. Подпись равнозначна собственноручной по 63-ФЗ.</p>
+      <div class="sigstamp" id="signPreview">
+        <div>
+          <p class="small dim">В документ будет проставлено:</p>
+          <div style="margin-top:8px; display:flex; align-items:flex-end; gap:14px">
+            <div><img id="signImg" alt=""><div class="small dim" id="signNoSig" hidden>Подпись не задана</div></div>
+            <div class="small dim" id="signDate">29.08.2026</div>
+          </div>
+        </div>
+        <button class="btn sm line" data-go="profile" style="width:auto">Изменить</button>
+      </div>
+      <div class="code"><input maxlength="1" inputmode="numeric" value="4"><input maxlength="1" inputmode="numeric" value="8"><input maxlength="1" inputmode="numeric" value="1"><input maxlength="1" inputmode="numeric" value="2"></div>
+      <div style="display:grid; gap:9px; margin-top:20px">
+        <button class="btn" id="signGo">Подписать</button>
+        <button class="btn line" data-toast="Код отправлен повторно">Отправить код ещё раз</button>
+        <button class="btn ghost" data-close>Отмена</button>
+      </div>
+    </div>
+    <div id="signStep2" hidden style="text-align:center; padding:10px 0">
+      <div class="ok-ico">✓</div>
+      <h2>Документ подписан</h2>
+      <p class="muted" style="margin-top:10px">Ваша подпись и дата проставлены в документ. Подписанный экземпляр отправлен вам и вашему бухгалтеру на почту.</p>
+      <button class="btn" style="margin-top:20px" data-close>Готово</button>
+    </div>
+  </div>
+</div>
+
+<!-- ЕЩЁ -->
+<div class="scrim" id="moreSheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Ещё разделы">
+    <div class="grab"></div>
+    <button class="sheetitem" data-go="accept"><span class="si">✓</span><div><b>Приёмка</b><em>1 этап ждёт проверки</em></div><span class="chev">›</span></button>
+    <button class="sheetitem" data-go="docs"><span class="si">▤</span><div><b>Документы</b><em>1 акт ждёт подписи</em></div><span class="chev">›</span></button>
+    <button class="sheetitem" data-go="loyalty"><span class="si">◆</span><div><b>Скидки и бонусы</b><em>Серебро · 5 000 ₽ на балансе</em></div><span class="chev">›</span></button>
+    <button class="sheetitem" data-go="partner"><span class="si">◇</span><div><b>Партнёрка</b><em>5 000 ₽ за клиента</em></div><span class="chev">›</span></button>
+    <button class="sheetitem" data-go="profile"><span class="si">☺</span><div><b>Профиль</b><em>Реквизиты, карты, уведомления</em></div><span class="chev">›</span></button>
+    <button class="btn ghost" data-close style="margin-top:8px">Закрыть</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const fmt = n => n.toLocaleString('ru-RU') + ' ₽';
+
+/* ---------- навигация ---------- */
+function go(tab){
+  $$('[data-panel]').forEach(p => p.hidden = p.dataset.panel !== tab);
+  $$('.navbtn').forEach(b => b.setAttribute('aria-current', String(b.dataset.tab === tab)));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+$$('.navbtn').forEach(b => { if (b.dataset.tab) b.addEventListener('click', () => go(b.dataset.tab)); });
+$$('[data-tab-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.tabGo)));
+$$('[data-go]').forEach(b => b.addEventListener('click', () => { closeAll(); go(b.dataset.go); }));
+$('#moreBtn').addEventListener('click', () => $('#moreSheet').hidden = false);
+
+function closeAll(){ ['#payModal','#cardModal','#signModal','#moreSheet'].forEach(s => $(s).hidden = true); }
+$$('[data-close]').forEach(b => b.addEventListener('click', closeAll));
+$$('.scrim').forEach(s => s.addEventListener('click', e => { if (e.target === s) closeAll(); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+
+/* ---------- тосты ---------- */
+let tt;
+function toast(text){
+  const t = $('#toast'); t.textContent = text; t.hidden = false;
+  clearTimeout(tt); tt = setTimeout(() => t.hidden = true, 3600);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-toast]');
+  if (b) toast(b.dataset.toast);
+});
+
+/* ---------- состояние ---------- */
+let balance = 5000;
+let cards = [{id:1, last:'4417', brand:'VISA', main:true}];
+let chosen = 'card1';
+
+function renderBalance(){
+  ['#balSide','#balKpi','#balBig','#balTop'].forEach(s => { const el = $(s); if (el) el.textContent = fmt(balance); });
+}
+function renderMethods(){
+  const box = $('#methods'); box.innerHTML = '';
+  cards.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'method';
+    d.innerHTML = '<div class="brand">'+c.brand+'</div>'+
+      '<div><h3>•••• '+c.last+'</h3><p class="small dim" style="margin-top:2px">'+(c.main?'Основная карта · используется для автосписаний':'Резервный способ')+'</p></div>'+
+      '<button class="btn sm line" data-toast="Карта отвязана — в демо изменения не сохраняются">Отвязать</button>';
+    box.appendChild(d);
+  });
+  const sbp = document.createElement('div');
+  sbp.className = 'method';
+  sbp.innerHTML = '<div class="brand sbp">СБП</div><div><h3>Система быстрых платежей</h3><p class="small dim" style="margin-top:2px">Оплата по QR-коду без привязки карты</p></div><span class="pill ok">ДОСТУПНО</span>';
+  box.appendChild(sbp);
+  const inv = document.createElement('div');
+  inv.className = 'method';
+  inv.innerHTML = '<div class="brand mir">СЧЁТ</div><div><h3>Счёт для юрлица</h3><p class="small dim" style="margin-top:2px">Реквизиты из профиля · закрывающие документы автоматически</p></div><span class="pill ok">ДОСТУПНО</span>';
+  box.appendChild(inv);
+}
+function renderPayMethods(){
+  const box = $('#payMethods'); box.innerHTML = '';
+  const opts = cards.map(c => ({id:'card'+c.id, t:'Карта •••• '+c.last, s:c.brand+' · сохранена в ЮKassa'}))
+    .concat([{id:'sbp', t:'СБП по QR-коду', s:'Оплата из приложения банка'},
+             {id:'invoice', t:'Счёт для юрлица', s:'ООО «Ремесло» · оплата по реквизитам'}]);
+  opts.forEach(o => {
+    const d = document.createElement('button');
+    d.type='button'; d.className='opt'; d.dataset.on = (chosen===o.id?'1':'0');
+    d.innerHTML = '<div style="flex:1; text-align:left"><b>'+o.t+'</b><small>'+o.s+'</small></div>'+(chosen===o.id?'<span style="color:var(--blue); font-weight:700">✓</span>':'');
+    d.addEventListener('click', () => { chosen = o.id; renderPayMethods(); updatePayButton(); });
+    box.appendChild(d);
+  });
+}
+function updatePayButton(){
+  const b = $('#payGo');
+  b.textContent = chosen === 'invoice' ? 'Выставить счёт на юрлицо'
+                : chosen === 'sbp' ? 'Показать QR-код' : 'Оплатить';
+}
+
+/* ---------- оплата ---------- */
+let current = {sum:0, name:''};
+function calc(){
+  const disc = Math.round(current.sum * 0.10);
+  const base = current.sum - disc;
+  const bonus = $('#useBonus').checked ? Math.min(balance, Math.floor(base * 0.5)) : 0;
+  $('#paySum').textContent = fmt(current.sum);
+  $('#payDisc').textContent = '−' + fmt(disc);
+  $('#payBonus').textContent = bonus ? '−' + fmt(bonus) : '0 ₽';
+  $('#payTotal').textContent = fmt(base - bonus);
+  return {bonus, total: base - bonus};
+}
+function openPay(sum, name){
+  current = {sum:Number(sum), name:name};
+  $('#payTitle').textContent = name;
+  $('#payStep1').hidden = false; $('#payStep2').hidden = true; $('#payStep3').hidden = true;
+  calc(); renderPayMethods(); updatePayButton();
+  $('#payModal').hidden = false;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-pay]');
+  if (b) openPay(b.dataset.pay, b.dataset.stage);
+});
+$('#useBonus').addEventListener('change', calc);
+$('#payGo').addEventListener('click', () => {
+  const {bonus, total} = calc();
+  if (chosen === 'invoice'){
+    closeAll();
+    toast('Счёт на ' + fmt(total) + ' выставлен и отправлен на buh@remeslo.ru');
+    return;
+  }
+  $('#payStep1').hidden = true; $('#payStep2').hidden = false;
+  setTimeout(() => {
+    balance -= bonus; renderBalance();
+    $('#payStep2').hidden = true; $('#payStep3').hidden = false;
+    $('#payDone').textContent = chosen === 'sbp'
+      ? fmt(total) + ' оплачены через СБП.'
+      : fmt(total) + ' списаны с карты •••• ' + cards[0].last + '.';
+  }, 1800);
+});
+$$('[data-close-too]').forEach(b => b.addEventListener('click', closeAll));
+
+/* ---------- привязка карты ---------- */
+$('#addCard').addEventListener('click', () => {
+  $('#cardStep1').hidden = false; $('#cardStep2').hidden = true;
+  $('#cardModal').hidden = false;
+});
+$('#cardNum').addEventListener('input', e => {
+  e.target.value = e.target.value.replace(/\D/g,'').slice(0,16).replace(/(.{4})/g,'$1 ').trim();
+});
+$('#cardExp').addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g,'').slice(0,4);
+  e.target.value = v.length > 2 ? v.slice(0,2)+'/'+v.slice(2) : v;
+});
+$('#cardGo').addEventListener('click', () => {
+  const digits = $('#cardNum').value.replace(/\D/g,'');
+  if (digits.length < 16){ toast('Проверьте номер карты — нужно 16 цифр'); return; }
+  const last = digits.slice(-4);
+  cards.push({id:cards.length+1, last:last, brand:'MIR', main:false});
+  renderMethods();
+  $('#cardStep1').hidden = true; $('#cardStep2').hidden = false;
+  $('#cardDone').textContent = 'Карта •••• ' + last + ' добавлена. Списали и вернули 1 ₽ для проверки.';
+});
+
+/* ---------- автосписание ---------- */
+$('#autopay').addEventListener('change', e => {
+  toast(e.target.checked
+    ? 'Автосписание включено: после приёмки этапа спишем сумму с карты •••• ' + cards[0].last
+    : 'Автосписание выключено — счета нужно оплачивать вручную');
+});
+
+/* ---------- подписание ---------- */
+let signBtn = null;
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-sign]');
+  if (!b) return;
+  signBtn = b;
+  $('#signTitle').textContent = b.dataset.sign;
+  $('#signStep1').hidden = false; $('#signStep2').hidden = true;
+  showSignature();
+  $('#signModal').hidden = false;
+});
+$('#signGo').addEventListener('click', () => {
+  if (!signature){
+    closeAll(); go('profile');
+    toast('Сначала добавьте свою подпись в профиле — дальше она будет подставляться сама');
+    return;
+  }
+  $('#signStep1').hidden = true; $('#signStep2').hidden = false;
+  if (signBtn){
+    const row = signBtn.closest('.doc');
+    row.querySelector('.pill').className = 'pill ok';
+    row.querySelector('.pill').textContent = 'ПОДПИСАН';
+    signBtn.textContent = 'Скачать';
+    signBtn.className = 'btn sm line';
+    signBtn.removeAttribute('data-sign');
+    signBtn.dataset.toast = 'Файл скачан';
+  }
+});
+
+/* ---------- приёмка ---------- */
+$$('[data-accept]').forEach(b => b.addEventListener('click', () => {
+  b.textContent = 'Этап принят'; b.disabled = true;
+  $('#acceptTimer').className = 'pill ok';
+  $('#acceptTimer').textContent = 'ПРИНЯТО';
+  toast('Этап принят. Акт сформирован, отправлен на почту, открыт финальный этап');
+}));
+
+/* ---------- обратный отсчёт до автоприёмки ---------- */
+const deadline = new Date('2026-08-31T19:40:00');
+function tick(){
+  const ms = deadline - new Date();
+  if (ms <= 0) return;
+  const d = Math.floor(ms/86400000), h = Math.floor(ms/3600000)%24, m = Math.floor(ms/60000)%60;
+  const t = $('#todoTimer');
+  if (t) t.textContent = 'Автоприёмка через ' + d + ' дн ' + h + ' ч ' + m + ' мин — после этого этап считается принятым';
+  const a = $('#acceptTimer');
+  if (a && a.className.indexOf('ok') === -1) a.textContent = 'АВТОПРИЁМКА ЧЕРЕЗ ' + d + ' Д ' + h + ' Ч';
+}
+tick(); setInterval(tick, 30000);
+
+/* ---------- партнёрская ссылка ---------- */
+$$('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText('https://' + $('#reflink').textContent); } catch(e){}
+  toast('Ссылка скопирована. За каждого оплатившего клиента — 5 000 ₽ на баланс');
+}));
+
+/* ---------- ИИ-бриф ---------- */
+const SCEN = {
+  ролик:{type:'Монтаж видео для соцсетей', vol:'30 роликов, 9:16', term:'2 рабочих дня', price:'15 000 ₽',
+    reply:'Понял: ролики для соцсетей. Уточню три вещи:<ul><li>Исходники — готовые съёмки или нарезка из длинного видео?</li><li>Нужны субтитры и обложка первого кадра?</li><li>Есть пример канала, на который равняемся по темпу?</li></ul>Считаю по типовому пакету: 30 роликов за 2 дня — 15 000 ₽ с вашей скидкой 10%.'},
+  лендинг:{type:'Лендинг под ключ', vol:'1 страница, до 8 блоков', term:'1 рабочий день', price:'15 000 ₽',
+    reply:'Лендинг делаем за один рабочий день. Чтобы уложиться, нужно:<ul><li>Кому продаём и какое главное действие на странице</li><li>Логотип, фото или доступ к материалам</li><li>Домен — ваш или регистрируем мы</li></ul>'},
+  презентац:{type:'Презентация', vol:'до 50 слайдов', term:'2 рабочих дня', price:'10 000 ₽',
+    reply:'Презентация до 50 слайдов — 10 000 ₽, 2 рабочих дня. Уточните:<ul><li>Аудитория: инвестор, клиент или команда?</li><li>Есть готовый текст и цифры или собираем структуру с нуля?</li><li>Нужен ли ваш фирменный стиль</li></ul>'},
+  сервис:{type:'Сервис для бизнеса', vol:'MVP, обсуждается', term:'оценка за 1 день', price:'по смете',
+    reply:'Сервисы считаем индивидуально, смету даём за день. Опишите:<ul><li>Какой процесс автоматизируем и сколько людей в нём заняты</li><li>Где живут данные — таблицы, CRM, 1С?</li><li>Доступ нужен клиентам или только вашей команде</li></ul>'}
+};
+function addMsg(cls, html){
+  const d = document.createElement('div'); d.className = 'msg ' + cls; d.innerHTML = html;
+  $('#chat').appendChild(d); $('#chat').scrollTop = $('#chat').scrollHeight;
+}
+function answer(text){
+  addMsg('me', text.replace(/</g,'&lt;'));
+  const key = Object.keys(SCEN).find(k => text.toLowerCase().includes(k));
+  const s = key ? SCEN[key] : null;
+  setTimeout(() => {
+    if (s){
+      addMsg('ai', s.reply);
+      $('#tzType').textContent = s.type; $('#tzVol').textContent = s.vol;
+      $('#tzTerm').textContent = s.term; $('#tzPrice').textContent = s.price;
+      $('#tzReady').textContent = '70%'; $('#tzBar').style.width = '70%';
+    } else {
+      addMsg('ai', 'Записал. Чтобы дать точную цену и срок, уточните формат результата и дедлайн — или выберите тип задачи кнопкой ниже, тогда подставлю типовые условия.');
+      $('#tzReady').textContent = '35%'; $('#tzBar').style.width = '35%';
+    }
+  }, 420);
+}
+$('#composer').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = $('#ask').value.trim(); if (!v) return;
+  $('#ask').value = ''; answer(v);
+});
+$$('[data-ask]').forEach(c => c.addEventListener('click', () => answer(c.dataset.ask)));
+
+/* ---------- вход и регистрация ---------- */
+let mode = 'login';
+function setMode(m){
+  mode = m;
+  $('#tabLogin').setAttribute('aria-pressed', String(m === 'login'));
+  $('#tabReg').setAttribute('aria-pressed', String(m === 'reg'));
+  $('#formLogin').hidden = m !== 'login';
+  $('#formReg').hidden = m !== 'reg';
+}
+$('#tabLogin').addEventListener('click', () => setMode('login'));
+$('#tabReg').addEventListener('click', () => setMode('reg'));
+$('#toReg').addEventListener('click', e => { e.preventDefault(); setMode('reg'); });
+$('#toLogin').addEventListener('click', e => { e.preventDefault(); setMode('login'); });
+
+function askCode(target){
+  $('#authForms').hidden = true; $('#authCode').hidden = false;
+  $('#codeTo').textContent = 'Отправили код на ' + target;
+}
+$('#codeBack').addEventListener('click', () => { $('#authForms').hidden = false; $('#authCode').hidden = true; });
+
+$('#loginGo').addEventListener('click', () => {
+  const v = $('#loginMail').value.trim();
+  if (!/.+@.+\..+/.test(v)){ toast('Проверьте адрес почты'); return; }
+  askCode(v);
+});
+$('#regGo').addEventListener('click', () => {
+  const name = $('#regName').value.trim(), phone = $('#regPhone').value.trim(), mail = $('#regMail').value.trim();
+  if (!name){ toast('Как к вам обращаться?'); return; }
+  if (phone.length < 5){ toast('Оставьте телефон или Telegram — там и напишем'); return; }
+  if (!/.+@.+\..+/.test(mail)){ toast('Проверьте адрес почты'); return; }
+  if (!$('#regAgree').checked){ toast('Нужно согласие с офертой и обработкой данных'); return; }
+  const company = $('#regCompany').value.trim();
+  const initials = name.split(/\s+/).slice(0,2).map(w => w[0].toUpperCase()).join('');
+  $$('.ava').forEach(a => { if (a.textContent.trim() === 'АК') a.textContent = initials; });
+  $$('.appbar .t').forEach(t => t.textContent = name.split(/\s+/)[0]);
+  $$('.appbar .s').forEach(t => t.textContent = company || 'Личный аккаунт');
+  askCode(mail);
+});
+$('#codeGo').addEventListener('click', () => {
+  $('#auth').hidden = true; $('#appShell').hidden = false;
+  toast(mode === 'reg' ? 'Кабинет создан. Первый шаг — поставить задачу' : 'Вы вошли в кабинет');
+  go(mode === 'reg' ? 'ai' : 'home');
+});
+$('#logout').addEventListener('click', () => {
+  $('#appShell').hidden = true; $('#auth').hidden = false;
+  $('#authForms').hidden = false; $('#authCode').hidden = true;
+  setMode('login'); window.scrollTo({top:0});
+});
+
+/* ---------- подпись ---------- */
+let signature = null;
+const pad = $('#sigPad'), ctx = pad.getContext('2d');
+let drawing = false, dirty = false;
+function padColor(){ return getComputedStyle(document.body).getPropertyValue('--ink').trim() || '#0C1524'; }
+function setupPad(){
+  ctx.clearRect(0,0,pad.width,pad.height);
+  ctx.lineWidth = 4; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.strokeStyle = padColor();
+  dirty = false;
+}
+function pos(e){
+  const r = pad.getBoundingClientRect();
+  const p = e.touches ? e.touches[0] : e;
+  return {x:(p.clientX - r.left) * pad.width / r.width, y:(p.clientY - r.top) * pad.height / r.height};
+}
+function start(e){ e.preventDefault(); drawing = true; dirty = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+function move(e){ if(!drawing) return; e.preventDefault(); const p = pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); }
+function end(){ drawing = false; }
+pad.addEventListener('mousedown', start); pad.addEventListener('mousemove', move);
+window.addEventListener('mouseup', end);
+pad.addEventListener('touchstart', start, {passive:false});
+pad.addEventListener('touchmove', move, {passive:false});
+pad.addEventListener('touchend', end);
+setupPad();
+
+function showSignature(){
+  const has = !!signature;
+  $('#sigEmpty').hidden = has; $('#sigHas').hidden = !has;
+  if (has) $('#sigImg').src = signature;
+  $('#signImg').hidden = !has; $('#signNoSig').hidden = has;
+  if (has) $('#signImg').src = signature;
+}
+$('#sigSave').addEventListener('click', () => {
+  if (!dirty){ toast('Сначала нарисуйте подпись в поле выше'); return; }
+  signature = pad.toDataURL('image/png');
+  showSignature();
+  toast('Подпись сохранена — теперь она проставляется в документы автоматически');
+});
+$('#sigClear').addEventListener('click', setupPad);
+$('#sigRedo').addEventListener('click', () => { signature = null; showSignature(); setupPad(); });
+$('#sigDel').addEventListener('click', () => { signature = null; showSignature(); setupPad(); toast('Подпись удалена'); });
+$('#sigFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { signature = r.result; showSignature(); toast('Подпись загружена'); };
+  r.readAsDataURL(f);
+});
+showSignature();
+
+renderBalance(); renderMethods();
+</script>
+
+</body>
+</html>

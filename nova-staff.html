@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B62FF">
+<title>NOVA Работа</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root{
+  --ink:#0C1524; --ink-2:#3B4A61; --ink-3:#7A8AA3;
+  --ground:#FFFFFF; --surface:#F2F5FA; --surface-2:#E6ECF6; --line:#D8E1EF;
+  --blue:#1B62FF; --sun:#FFDD2D; --mint:#00A97A; --warn:#E07B00; --crit:#D93A3A; --violet:#7A3FF2;
+  --shadow:0 1px 2px rgba(12,21,36,.06),0 12px 32px -18px rgba(12,21,36,.25);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ink:#EAF0FA; --ink-2:#A9B8CE; --ink-3:#6F809A;
+  --ground:#080D17; --surface:#101A2B; --surface-2:#18253A; --line:#22314A;
+  --blue:#4D86FF; --mint:#2ED9A6; --warn:#FFB43D; --crit:#FF6B6B; --violet:#A47BFF;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
+}}
+:root[data-theme="dark"]{
+  --ink:#EAF0FA; --ink-2:#A9B8CE; --ink-3:#6F809A;
+  --ground:#080D17; --surface:#101A2B; --surface-2:#18253A; --line:#22314A;
+  --blue:#4D86FF; --mint:#2ED9A6; --warn:#FFB43D; --crit:#FF6B6B; --violet:#A47BFF;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--surface); color:var(--ink); font-family:Onest,"Segoe UI",system-ui,sans-serif; font-size:15px; line-height:1.5}
+h1,h2,h3,h4{margin:0; letter-spacing:-.02em; font-weight:700; line-height:1.2; text-wrap:balance}
+h1{font-size:26px; letter-spacing:-.03em; font-weight:800}
+h2{font-size:19px}
+h3{font-size:16px}
+p{margin:0}
+a{color:inherit}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums}
+.eyebrow{font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+.small{font-size:13px}
+.dim{color:var(--ink-3)}
+.muted{color:var(--ink-2)}
+
+.app{display:grid; grid-template-columns:248px 1fr; min-height:100vh}
+aside{background:var(--ground); border-right:1px solid var(--line); padding:20px 14px; display:flex; flex-direction:column; gap:4px; position:sticky; top:0; height:100vh; overflow:auto}
+.logo{display:flex; align-items:center; gap:9px; font-weight:800; font-size:20px; letter-spacing:-.04em; padding:6px 10px 4px}
+.logo span.tag{font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700; background:var(--ink); color:var(--ground); padding:2px 6px; border-radius:5px; letter-spacing:.08em}
+:root[data-theme="dark"] .logo span.tag,:root:not([data-theme="light"]) .logo span.tag{background:var(--surface-2); color:var(--ink)}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 18%,transparent)}
+.navbtn{display:flex; align-items:center; gap:11px; width:100%; text-align:left; background:none; border:0; font-family:inherit; font-size:15px; font-weight:500; color:var(--ink-2); padding:10px 11px; border-radius:10px; cursor:pointer}
+.navbtn:hover{background:var(--surface); color:var(--ink)}
+.navbtn[aria-current="true"]{background:color-mix(in srgb,var(--blue) 12%,transparent); color:var(--blue); font-weight:700}
+.navbtn .ico{width:18px; text-align:center; flex:none}
+.navbtn .badge{margin-left:auto; background:var(--crit); color:#fff; font-size:11px; font-weight:700; padding:1px 7px; border-radius:999px; font-family:"JetBrains Mono",monospace}
+.navsep{margin:12px 11px 6px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3)}
+.side-foot{margin-top:auto; border-top:1px solid var(--line); padding-top:14px}
+.user{display:flex; gap:10px; align-items:center; padding:8px 10px; width:100%; background:none; border:0; font-family:inherit; text-align:left; cursor:pointer; border-radius:10px; color:var(--ink)}
+.user:hover{background:var(--surface)}
+.ava{width:34px;height:34px;border-radius:10px; background:var(--violet); color:#fff; display:grid; place-items:center; font-weight:700; font-size:14px; flex:none}
+main{padding:26px clamp(16px,3vw,34px) 60px; max-width:1320px}
+.topbar{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:20px}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; border:0; cursor:pointer; font-family:inherit; font-weight:700; font-size:15px; padding:11px 18px; border-radius:11px; background:var(--blue); color:#fff; text-decoration:none; transition:transform .13s}
+.btn:hover{transform:translateY(-1px)}
+.btn.sm{padding:8px 13px; font-size:13px; border-radius:9px}
+.btn.ghost{background:var(--surface-2); color:var(--ink)}
+.btn.line{background:transparent; color:var(--ink); border:1px solid var(--line)}
+.btn.ok{background:var(--mint)}
+.btn.danger{background:transparent; color:var(--crit); border:1px solid color-mix(in srgb,var(--crit) 40%,var(--line))}
+.btn:disabled{opacity:.45; cursor:default; transform:none}
+
+.card{background:var(--ground); border:1px solid var(--line); border-radius:16px; padding:20px}
+.grid{display:grid; gap:14px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:820px){.g2,.g3{grid-template-columns:1fr}}
+.kpi b{display:block; font-family:"JetBrains Mono",monospace; font-size:25px; font-weight:700; margin-top:6px; font-variant-numeric:tabular-nums}
+
+.pill{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; padding:4px 9px; border-radius:999px; font-family:"JetBrains Mono",monospace; letter-spacing:.02em}
+.pill.ok{background:color-mix(in srgb,var(--mint) 16%,transparent); color:var(--mint)}
+.pill.work{background:color-mix(in srgb,var(--blue) 14%,transparent); color:var(--blue)}
+.pill.wait{background:color-mix(in srgb,var(--warn) 18%,transparent); color:var(--warn)}
+.pill.due{background:color-mix(in srgb,var(--crit) 14%,transparent); color:var(--crit)}
+.pill.idle{background:var(--surface-2); color:var(--ink-3)}
+.pill.new{background:color-mix(in srgb,var(--violet) 16%,transparent); color:var(--violet)}
+
+/* заявки */
+.lead{display:grid; grid-template-columns:46px 1fr auto; gap:14px; align-items:start; background:var(--ground); border:1px solid var(--line); border-radius:15px; padding:16px; border-left:4px solid var(--violet)}
+.lead.hot{border-left-color:var(--crit)}
+.lead .src{width:46px;height:46px;border-radius:13px; background:var(--surface-2); display:grid; place-items:center; font-size:17px}
+.lead h3{font-size:15px}
+.lead .meta{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; font-size:12px; color:var(--ink-3); font-family:"JetBrains Mono",monospace}
+.lead .meta span{background:var(--surface); border:1px solid var(--line); padding:3px 8px; border-radius:999px}
+.lead p.txt{color:var(--ink-2); font-size:14px; margin-top:8px; max-width:70ch}
+.leadacts{display:flex; flex-direction:column; gap:8px; align-items:flex-end}
+@media(max-width:760px){
+  .lead{grid-template-columns:46px 1fr}
+  .leadacts{grid-column:1 / -1; flex-direction:row; flex-wrap:wrap}
+}
+
+/* канбан */
+.board{display:grid; grid-template-columns:repeat(5,minmax(230px,1fr)); gap:12px; overflow-x:auto; padding-bottom:8px}
+.col{background:var(--surface-2); border-radius:16px; padding:12px; min-width:230px}
+:root[data-theme="dark"] .col,:root:not([data-theme="light"]) .col{background:color-mix(in srgb,var(--ground) 60%,var(--surface))}
+.col h4{font-size:12px; font-family:"JetBrains Mono",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); display:flex; justify-content:space-between; padding:2px 4px 10px}
+.jobs{display:flex; flex-direction:column; gap:9px}
+.job{background:var(--ground); border:1px solid var(--line); border-radius:13px; padding:13px; cursor:pointer; transition:border-color .14s, transform .14s}
+.job:hover{border-color:var(--blue); transform:translateY(-2px)}
+.job b{display:block; font-size:14px; font-weight:600}
+.job .cl{display:block; font-size:12px; color:var(--ink-3); margin-top:3px}
+.job .row{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:10px}
+.job .who{width:24px;height:24px;border-radius:8px; background:var(--surface-2); display:grid; place-items:center; font-size:10px; font-weight:700; color:var(--ink-2)}
+.job .due{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--ink-3)}
+.job .due.hot{color:var(--crit); font-weight:700}
+
+.conn{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+.conn a{text-decoration:none}
+.hint{display:flex; gap:10px; align-items:flex-start; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:13px 15px; font-size:13px; color:var(--ink-2)}
+.hint b{color:var(--ink)}
+.list{display:flex; flex-direction:column}
+.item{display:grid; grid-template-columns:1fr auto; gap:14px; align-items:center; padding:15px 0; border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0; padding-bottom:0}
+.item:first-child{padding-top:0}
+
+table{width:100%; border-collapse:collapse; font-size:14px}
+.tablewrap{overflow-x:auto}
+th{text-align:left; font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); padding:0 12px 10px 0; font-weight:700; white-space:nowrap}
+td{padding:13px 12px 13px 0; border-top:1px solid var(--line); vertical-align:middle}
+
+.bars{display:flex; flex-direction:column; gap:12px; margin-top:18px}
+.brow{display:grid; grid-template-columns:120px 1fr 70px; gap:12px; align-items:center; font-size:13px}
+.btrack{height:10px; border-radius:99px; background:var(--surface-2); overflow:hidden}
+.btrack i{display:block; height:100%; border-radius:99px; background:var(--blue)}
+.brow b{font-family:"JetBrains Mono",monospace; text-align:right; font-size:13px}
+@media(max-width:600px){.brow{grid-template-columns:88px 1fr 62px}}
+
+input,textarea,select{font-family:inherit; font-size:15px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:11px; padding:12px 14px; width:100%}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--blue)}
+label.f{display:block; margin-top:14px}
+label.f span{display:block; font-size:13px; color:var(--ink-3); margin-bottom:6px}
+
+.scrim{position:fixed; inset:0; background:rgba(8,13,23,.62); display:grid; place-items:center; padding:20px; z-index:100}
+.scrim[hidden]{display:none}
+.modal{background:var(--ground); border-radius:18px; padding:24px; max-width:520px; width:100%; box-shadow:var(--shadow); border:1px solid var(--line); max-height:90vh; overflow:auto}
+.rowline{display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-bottom:1px solid var(--line); font-size:14px}
+.rowline:last-of-type{border-bottom:0}
+.steps{display:flex; gap:6px; margin-top:16px; flex-wrap:wrap}
+.st{flex:1; min-width:70px; text-align:center; font-size:11px; font-family:"JetBrains Mono",monospace; padding:8px 4px; border-radius:9px; background:var(--surface); color:var(--ink-3); border:1px solid var(--line)}
+.st.on{background:var(--blue); color:#fff; border-color:var(--blue)}
+.st.done{background:color-mix(in srgb,var(--mint) 16%,transparent); color:var(--mint); border-color:transparent}
+.check{display:flex; gap:10px; align-items:flex-start; padding:9px 0; font-size:14px; color:var(--ink-2)}
+.check input{width:auto; margin-top:3px; accent-color:var(--blue)}
+
+.toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--ink); color:var(--ground); padding:13px 20px; border-radius:12px; font-weight:600; font-size:14px; box-shadow:var(--shadow); z-index:200; max-width:92vw; text-align:center}
+.toast[hidden]{display:none}
+:root[data-theme="dark"] .toast,:root:not([data-theme="light"]) .toast{background:var(--surface-2); color:var(--ink); border:1px solid var(--line)}
+section[hidden]{display:none}
+
+/* вход */
+.auth{position:fixed; inset:0; z-index:300; background:var(--surface); display:grid; place-items:center; padding:24px; overflow:auto}
+.auth[hidden]{display:none}
+.authbox{width:100%; max-width:380px}
+.code{display:flex; gap:8px; justify-content:center; margin-top:18px}
+.code input{width:52px; text-align:center; font-family:"JetBrains Mono",monospace; font-size:22px; font-weight:700; padding:12px 0}
+
+.more-btn{display:none}
+.apptools{margin-left:auto; display:flex; gap:8px}
+.iconbtn{width:38px;height:38px;border-radius:12px; border:1px solid var(--line); background:var(--ground); font-size:15px; color:var(--ink-2); cursor:pointer; position:relative}
+.iconbtn i{position:absolute; top:6px; right:6px; width:7px;height:7px; border-radius:50%; background:var(--crit)}
+.sheet{background:var(--ground); border-radius:22px 22px 0 0; padding:10px 16px calc(20px + env(safe-area-inset-bottom)); width:100%; max-width:560px; display:flex; flex-direction:column; gap:4px; border:1px solid var(--line); border-bottom:0}
+.grab{width:42px;height:4px;border-radius:99px; background:var(--line); margin:2px auto 12px}
+.sheetitem{display:grid; grid-template-columns:40px 1fr auto; align-items:center; gap:12px; width:100%; text-align:left; background:none; border:0; border-radius:14px; padding:12px 8px; font-family:inherit; color:var(--ink); cursor:pointer}
+.sheetitem .si{width:40px;height:40px;border-radius:12px; background:var(--surface-2); display:grid; place-items:center; color:var(--blue)}
+.sheetitem b{display:block; font-size:15px}
+.sheetitem em{display:block; font-style:normal; font-size:13px; color:var(--ink-3); margin-top:2px}
+
+@media(max-width:900px){
+  body{background:var(--surface); padding-bottom:calc(78px + env(safe-area-inset-bottom))}
+  .app{display:block}
+  aside{position:fixed; bottom:0; top:auto; left:0; right:0; height:auto; z-index:60; flex-direction:row; justify-content:space-between; gap:0; overflow:visible;
+    background:color-mix(in srgb,var(--ground) 95%,transparent); backdrop-filter:blur(16px); border:0; border-top:1px solid var(--line); padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+  aside .logo,aside .side-foot,aside .navsep{display:none}
+  aside .navbtn{flex:1 1 0; min-height:54px; flex-direction:column; gap:4px; padding:7px 2px; font-size:11px; font-weight:600; border-radius:14px; justify-content:center; text-align:center; white-space:nowrap}
+  aside .navbtn .ico{display:block; font-size:20px; width:auto; height:22px; line-height:1}
+  aside .navbtn[aria-current="true"]{background:none; color:var(--blue)}
+  aside .navbtn .badge{position:absolute; transform:translate(16px,-8px)}
+  aside .navbtn[data-tab="clients"],aside .navbtn[data-tab="money"],
+  aside .navbtn[data-tab="docs"]{display:none}
+  aside .more-btn{display:flex}
+  main{padding:0 0 26px; max-width:none}
+  .appbar{display:flex; align-items:center; gap:12px; padding:calc(12px + env(safe-area-inset-top)) 16px 12px; background:var(--ground); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:40}
+  .appbar .t{font-weight:700; font-size:16px}
+  .appbar .s{font-size:12px; color:var(--ink-3)}
+  section[data-panel]{padding:16px}
+  .topbar h1{font-size:22px}
+  .topbar .btn{width:100%}
+  .grid.g4{grid-template-columns:1fr 1fr}
+  .btn{width:100%}
+  .leadacts .btn,.item .btn,.job .btn{width:auto}
+  .board{grid-template-columns:repeat(5,86vw)}
+  .modal{border-radius:22px 22px 0 0; align-self:flex-end; max-width:none; padding:22px 18px calc(22px + env(safe-area-inset-bottom))}
+  .scrim{place-items:end center; padding:0}
+  .toast{left:16px; right:16px; bottom:calc(90px + env(safe-area-inset-bottom)); transform:none}
+}
+@media(min-width:901px){.appbar{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<!-- ВХОД -->
+<div class="auth" id="auth">
+  <div class="authbox">
+    <div class="logo" style="padding:0"><span class="dot"></span>NOVA <span class="tag">РАБОТА</span></div>
+    <div id="authForm">
+      <h1 style="margin-top:20px; font-size:24px">Вход для команды</h1>
+      <p class="small dim" style="margin-top:8px">Рабочий кабинет: заявки с сайта, производство, финансы. Доступ выдаёт руководитель.</p>
+      <label class="f"><span>Рабочая почта</span><input id="loginId" type="email" value="darya@nova.ru"></label>
+      <button class="btn" style="width:100%; margin-top:18px" id="loginGo">Получить код</button>
+    </div>
+    <div id="authCode" hidden>
+      <h1 style="margin-top:20px; font-size:24px">Введите код</h1>
+      <p class="small dim" style="margin-top:8px" id="codeTo">Код отправлен на рабочую почту</p>
+      <div class="code"><input maxlength="1" value="7"><input maxlength="1" value="1"><input maxlength="1" value="0"><input maxlength="1" value="4"></div>
+      <button class="btn" style="width:100%; margin-top:20px" id="codeGo">Войти</button>
+      <button class="btn ghost" style="width:100%; margin-top:9px" id="codeBack">Назад</button>
+    </div>
+    <p class="small dim" style="margin-top:22px; text-align:center">Демо-режим: код любой, данные не сохраняются.</p>
+  </div>
+</div>
+
+<div class="app" id="shell" hidden>
+  <aside>
+    <div class="logo"><span class="dot"></span>NOVA <span class="tag">РАБОТА</span></div>
+    <button class="navbtn" data-tab="home" aria-current="true"><span class="ico">◈</span>Мой день</button>
+    <button class="navbtn" data-tab="leads"><span class="ico">✉</span>Заявки<span class="badge" id="leadCount">4</span></button>
+    <button class="navbtn" data-tab="board"><span class="ico">▤</span>Производство</button>
+    <button class="navbtn" data-tab="clients"><span class="ico">☺</span>Клиенты</button>
+    <p class="navsep">Деньги и документы</p>
+    <button class="navbtn" data-tab="money"><span class="ico">₽</span>Финансы<span class="badge">2</span></button>
+    <button class="navbtn" data-tab="docs"><span class="ico">▤</span>Документы<span class="badge">1</span></button>
+    <button class="navbtn more-btn" id="moreBtn" type="button"><span class="ico">☰</span>Ещё</button>
+    <div class="side-foot">
+      <button class="user" id="logout">
+        <div class="ava">ДС</div>
+        <div><div style="font-weight:600; font-size:14px">Дарья Смирнова</div><div class="small dim">Все задачи на вас · выйти</div></div>
+      </button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="appbar">
+      <div class="ava">ДС</div>
+      <div><div class="t">Дарья</div><div class="s">Все задачи на вас</div></div>
+      <div class="apptools">
+        <button class="iconbtn" data-toast="4 новые заявки, 2 этапа на сдаче сегодня">🔔<i></i></button>
+        <button class="iconbtn" id="logout2" aria-label="Выйти">⎋</button>
+      </div>
+    </div>
+
+    <!-- МОЙ ДЕНЬ -->
+    <section data-panel="home">
+      <div class="topbar">
+        <div><p class="eyebrow">29 августа, суббота</p><h1 style="margin-top:8px">Мой день</h1></div>
+        <button class="btn" data-tab-go="leads">Разобрать заявки</button>
+      </div>
+
+      <div class="grid g4">
+        <div class="card kpi"><p class="eyebrow">Новых заявок</p><b style="color:var(--violet)" id="kpiLeads">4</b><p class="small dim">2 без ответа &gt; 1 ч</p></div>
+        <div class="card kpi"><p class="eyebrow">Задач в работе</p><b id="kpiJobs">7</b><p class="small dim">3 сдаются сегодня</p></div>
+        <div class="card kpi"><p class="eyebrow">Ждут оплаты</p><b style="color:var(--warn)">37 500 ₽</b><p class="small dim">4 счёта</p></div>
+        <div class="card kpi"><p class="eyebrow">Сдано за месяц</p><b style="color:var(--mint)">214 000 ₽</b><p class="small dim">18 этапов</p></div>
+      </div>
+
+      <div class="grid g2" style="margin-top:14px">
+        <div class="card">
+          <h2>Сегодня по плану</h2>
+          <div class="list" style="margin-top:16px">
+            <div class="item"><div><h3>Сдать этап «Лендинг · дизайн»</h3><p class="small dim" style="margin-top:3px">ООО «Ремесло» · до 18:00 · счёт выставится автоматически</p></div><button class="btn sm" data-deliver="Лендинг · дизайн и вёрстка">Сдать</button></div>
+            <div class="item"><div><h3>Созвон: презентация для инвесторов</h3><p class="small dim" style="margin-top:3px">15:00 · согласование структуры, 30 минут</p></div><span class="pill work">15:00</span></div>
+            <div class="item"><div><h3>Проверить 20 роликов перед сдачей</h3><p class="small dim" style="margin-top:3px">Монтажёр закончил, нужен просмотр по чек-листу</p></div><button class="btn sm line" data-toast="Открываем материалы на проверку">Открыть</button></div>
+            <div class="item"><div><h3>Напомнить об оплате счёта №2026-114-3</h3><p class="small dim" style="margin-top:3px">7 500 ₽ · срок истекает 2 сентября</p></div><button class="btn sm ghost" data-toast="Напоминание отправлено клиенту в кабинет и на почту">Напомнить</button></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px">
+            <h2>Свежие заявки</h2>
+            <button class="btn sm line" data-tab-go="leads">Все</button>
+          </div>
+          <div class="list" style="margin-top:16px" id="homeLeads"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="hint"><span>💬</span><div><b>Как мы работаем.</b> Общение — в мессенджере клиента: так быстрее и привычнее. Всё, что имеет цену и сроки — ТЗ, сдача этапа, счёт, акт, приёмка — только через кабинет. Ни одна договорённость не живёт только в переписке.</div></div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Риски и просрочки</h2>
+        <div class="list" style="margin-top:16px">
+          <div class="item"><div><h3>Заявка «Студия Полёт» без ответа 3 часа</h3><p class="small dim" style="margin-top:3px">Норматив — 1 час. Конверсия падает вдвое после двух часов</p></div><span class="pill due">СРОЧНО</span></div>
+          <div class="item"><div><h3>Клиент не принял этап 3 дня</h3><p class="small dim" style="margin-top:3px">«Ремесло» · автоприёмка 31 августа в 19:40</p></div><span class="pill wait">СЛЕДИМ</span></div>
+          <div class="item"><div><h3>Просрочка оплаты: ИП Соколова</h3><p class="small dim" style="margin-top:3px">9 000 ₽ · 4 дня сверх срока</p></div><button class="btn sm ghost" data-toast="Отправлено напоминание об оплате">Написать</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ЗАЯВКИ -->
+    <section data-panel="leads" hidden>
+      <div class="topbar">
+        <div><p class="eyebrow">Входящие с сайта</p><h1 style="margin-top:8px">Заявки</h1><p class="small dim" style="margin-top:6px">Норматив ответа — 1 час. Заявка автоматически превращается в задачу, когда вы берёте её в работу.</p></div>
+      </div>
+      <div class="grid" id="leadList" style="gap:12px"></div>
+      <div class="card" id="leadEmpty" hidden style="text-align:center"><h2>Заявок нет</h2><p class="muted" style="margin-top:8px">Все входящие разобраны. Новые появятся здесь и придут пушем.</p></div>
+    </section>
+
+    <!-- ПРОИЗВОДСТВО -->
+    <section data-panel="board" hidden>
+      <div class="topbar">
+        <div><p class="eyebrow">Производство</p><h1 style="margin-top:8px">Доска задач</h1><p class="small dim" style="margin-top:6px">Нажмите на карточку, чтобы открыть задачу и перевести её дальше.</p></div>
+      </div>
+      <div class="board" id="board"></div>
+    </section>
+
+    <!-- КЛИЕНТЫ -->
+    <section data-panel="clients" hidden>
+      <div class="topbar"><div><p class="eyebrow">База</p><h1 style="margin-top:8px">Клиенты</h1></div></div>
+      <div class="card">
+        <div class="tablewrap">
+          <table>
+            <tr><th>Клиент</th><th>Контакт</th><th>Задач</th><th>Оплачено за год</th><th>Уровень</th><th></th></tr>
+            <tr><td><b>ООО «Ремесло»</b><br><span class="small dim">Алексей Кузнецов</span></td><td><div class="conn"><a class="btn sm" style="width:auto" target="_blank" rel="noopener" href="https://t.me/kuznetsov_a">Telegram</a><a class="btn sm line" style="width:auto" href="tel:+79164021204">Позвонить</a></div></td><td class="mono">3 активных</td><td class="mono">142 500 ₽</td><td><span class="pill work">СЕРЕБРО · 10%</span></td><td><button class="btn sm line" data-toast="Открыта карточка клиента">Открыть</button></td></tr>
+            <tr><td><b>Онлайн-школа «Формат»</b><br><span class="small dim">Марина Соловьёва</span></td><td><div class="conn"><a class="btn sm" style="width:auto" target="_blank" rel="noopener" href="https://wa.me/79037714502">WhatsApp</a><a class="btn sm line" style="width:auto" href="tel:+79037714502">Позвонить</a></div></td><td class="mono">1 активная</td><td class="mono">96 000 ₽</td><td><span class="pill idle">СТАРТ</span></td><td><button class="btn sm line" data-toast="Открыта карточка клиента">Открыть</button></td></tr>
+            <tr><td><b>Северный кофе</b><br><span class="small dim">Дмитрий Волков</span></td><td><div class="conn"><a class="btn sm" style="width:auto" target="_blank" rel="noopener" href="https://t.me/pavel_drozdov">Telegram</a><a class="btn sm line" style="width:auto" href="tel:+79213021088">Позвонить</a></div></td><td class="mono">подписка</td><td class="mono">240 000 ₽</td><td><span class="pill ok">ЗОЛОТО · 15%</span></td><td><button class="btn sm line" data-toast="Открыта карточка клиента">Открыть</button></td></tr>
+            <tr><td><b>ИП Соколова</b><br><span class="small dim">Елена Соколова</span></td><td><div class="conn"><a class="btn sm" style="width:auto" target="_blank" rel="noopener" href="https://wa.me/79992144102">WhatsApp</a><a class="btn sm line" style="width:auto" href="tel:+79992144102">Позвонить</a></div></td><td class="mono">1 активная</td><td class="mono">9 000 ₽</td><td><span class="pill due">ДОЛГ 9 000 ₽</span></td><td><button class="btn sm line" data-toast="Открыта карточка клиента">Открыть</button></td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ФИНАНСЫ -->
+    <section data-panel="money" hidden>
+      <div class="topbar"><div><p class="eyebrow">Финансы</p><h1 style="margin-top:8px">Счета и поступления</h1></div></div>
+      <div class="grid g3">
+        <div class="card kpi"><p class="eyebrow">Ожидается</p><b style="color:var(--warn)">37 500 ₽</b><p class="small dim">4 счёта</p></div>
+        <div class="card kpi"><p class="eyebrow">Просрочено</p><b style="color:var(--crit)">9 000 ₽</b><p class="small dim">1 счёт · 4 дня</p></div>
+        <div class="card kpi"><p class="eyebrow">Поступило в августе</p><b style="color:var(--mint)">214 000 ₽</b><p class="small dim">ЮKassa и переводы</p></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>Счета</h2>
+        <div class="tablewrap" style="margin-top:14px">
+          <table>
+            <tr><th>Счёт</th><th>Клиент</th><th>Сумма</th><th>Срок</th><th>Статус</th><th></th></tr>
+            <tr><td class="mono">2026-114-3</td><td>ООО «Ремесло»</td><td class="mono">7 500 ₽</td><td class="mono">02.09</td><td><span class="pill wait">ЖДЁМ</span></td><td><button class="btn sm ghost" data-toast="Напоминание отправлено клиенту">Напомнить</button></td></tr>
+            <tr><td class="mono">2026-121-1</td><td>ИП Соколова</td><td class="mono">9 000 ₽</td><td class="mono">25.08</td><td><span class="pill due">ПРОСРОЧЕН</span></td><td><button class="btn sm ghost" data-toast="Напоминание отправлено, менеджер уведомлён">Напомнить</button></td></tr>
+            <tr><td class="mono">2026-119-2</td><td>Формат</td><td class="mono">12 000 ₽</td><td class="mono">05.09</td><td><span class="pill idle">ВЫСТАВИМ ПОСЛЕ СДАЧИ</span></td><td><button class="btn sm line" disabled>—</button></td></tr>
+            <tr><td class="mono">2026-118-1</td><td>ООО «Ремесло»</td><td class="mono">5 000 ₽</td><td class="mono">26.08</td><td><span class="pill ok">ОПЛАЧЕН</span></td><td><button class="btn sm line" data-toast="Чек и акт отправлены повторно">Документы</button></td></tr>
+            <tr><td class="mono">2026-117-4</td><td>Северный кофе</td><td class="mono">120 000 ₽</td><td class="mono">01.08</td><td><span class="pill ok">ПОДПИСКА</span></td><td><button class="btn sm line" data-toast="Открыт договор подписки">Договор</button></td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ДОКУМЕНТЫ -->
+    <section data-panel="docs" hidden>
+      <div class="topbar"><div><p class="eyebrow">Документооборот</p><h1 style="margin-top:8px">Документы</h1><p class="small dim" style="margin-top:6px">Договоры, счета и акты собираются шаблонами из данных задачи. Вам остаётся проверить и подписать.</p></div></div>
+      <div class="card">
+        <h2>Ждут вашей подписи</h2>
+        <div class="list" style="margin-top:16px">
+          <div class="item"><div><h3>Договор №2026-121 · ИП Соколова</h3><p class="small dim" style="margin-top:3px">Собран из шаблона по согласованной смете 9 000 ₽</p></div><button class="btn sm" data-sign="Договор №2026-121">Проверить и подписать</button></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h2>Последние документы</h2>
+        <div class="list" style="margin-top:16px">
+          <div class="item"><div><h3>Акт №2026-114-2 · ООО «Ремесло»</h3><p class="small dim" style="margin-top:3px">Подписан с обеих сторон 29.08</p></div><span class="pill ok">ПОДПИСАН</span></div>
+          <div class="item"><div><h3>Счёт №2026-114-3</h3><p class="small dim" style="margin-top:3px">Выставлен автоматически при сдаче этапа</p></div><span class="pill wait">ЖДЁМ ОПЛАТУ</span></div>
+          <div class="item"><div><h3>Договор №2026-118 · Лендинг</h3><p class="small dim" style="margin-top:3px">Подписан 26.08</p></div><span class="pill ok">ПОДПИСАН</span></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- КАРТОЧКА ЗАЯВКИ -->
+<div class="scrim" id="leadModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <p class="eyebrow" id="lmSrc">Квиз на сайте · 12 минут назад</p>
+    <h2 id="lmTitle" style="margin-top:10px">Монтаж роликов для соцсетей</h2>
+    <div style="margin-top:16px">
+      <div class="rowline"><span class="dim">Клиент</span><b id="lmName">—</b></div>
+      <div class="rowline"><span class="dim">Контакт</span><b id="lmContact">—</b></div>
+      <div class="rowline"><span class="dim">Задача</span><b id="lmTask">—</b></div>
+      <div class="rowline"><span class="dim">Расчёт из квиза</span><b class="mono" id="lmPrice">—</b></div>
+      <div class="rowline"><span class="dim">Срок</span><b id="lmTerm">—</b></div>
+    </div>
+    <p class="eyebrow" style="margin-top:16px">Написать клиенту</p>
+    <div class="conn" id="lmConn" style="margin-top:8px"></div>
+    <button class="btn line" style="margin-top:8px" id="lmGreet">Скопировать приветствие</button>
+    <p class="small dim" style="margin-top:14px">Комментарий клиента</p>
+    <p class="muted" style="margin-top:6px" id="lmNote">—</p>
+    <div class="hint" style="margin-top:16px"><span>💬</span><div><b>Порядок работы.</b> Пишем клиенту в мессенджер, дальше все документы, сроки и оплата идут через кабинет — чтобы ничего не терялось в переписке.</div></div>
+    <div style="display:grid; gap:9px; margin-top:18px">
+      <button class="btn" id="lmTake">Взять в работу</button>
+      <button class="btn danger" id="lmDrop">Отклонить заявку</button>
+    </div>
+  </div>
+</div>
+
+<!-- КАРТОЧКА ЗАДАЧИ -->
+<div class="scrim" id="jobModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <p class="eyebrow" id="jmClient">ООО «Ремесло»</p>
+    <h2 id="jmTitle" style="margin-top:10px">Задача</h2>
+    <div class="steps" id="jmSteps"></div>
+    <div style="margin-top:18px">
+      <div class="rowline"><span class="dim">Исполнитель</span><b id="jmWho">—</b></div>
+      <div class="rowline"><span class="dim">Дедлайн</span><b id="jmDue">—</b></div>
+      <div class="rowline"><span class="dim">Сумма этапа</span><b class="mono" id="jmSum">—</b></div>
+    </div>
+    <p class="eyebrow" style="margin-top:18px">Чек-лист перед сдачей</p>
+    <label class="check"><input type="checkbox"> Формат и хронометраж совпадают с ТЗ</label>
+    <label class="check"><input type="checkbox"> Субтитры и обложки в едином стиле</label>
+    <label class="check"><input type="checkbox"> Файлы названы по схеме и залиты клиенту</label>
+    <div style="display:grid; gap:9px; margin-top:18px">
+      <button class="btn" id="jmNext">Перевести дальше</button>
+      <button class="btn ok" id="jmDeliver">Сдать этап клиенту</button>
+      <button class="btn line" id="jmWrite">Написать клиенту</button>
+      <button class="btn ghost" data-close>Закрыть</button>
+    </div>
+    <p class="small dim" style="margin-top:12px">При сдаче клиенту уходит уведомление, автоматически выставляется счёт и запускается срок приёмки.</p>
+  </div>
+</div>
+
+<!-- ЕЩЁ -->
+<div class="scrim" id="moreSheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="grab"></div>
+    <button class="sheetitem" data-go="clients"><span class="si">☺</span><div><b>Клиенты</b><em>База и история работ</em></div><span class="dim">›</span></button>
+    <button class="sheetitem" data-go="money"><span class="si">₽</span><div><b>Финансы</b><em>2 счёта ждут оплаты</em></div><span class="dim">›</span></button>
+    <button class="sheetitem" data-go="docs"><span class="si">▤</span><div><b>Документы</b><em>1 договор ждёт подписи</em></div><span class="dim">›</span></button>
+    <button class="btn ghost" data-close style="margin-top:8px">Закрыть</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const money = n => n.toLocaleString('ru-RU') + ' ₽';
+
+/* данные */
+let LEADS = [
+  {id:1, src:'Квиз на сайте', ico:'✳', ago:'12 минут назад', hot:false, name:'Игорь Мельников', company:'Онлайн-школа «Рост»',
+   tg:'melnikov_i', phone:'79164021108', mail:'',
+   task:'Монтаж видео для соцсетей', price:'15 000 ₽', term:'2 дня, обычный срок', note:'Нужно 30 роликов из записей вебинаров. Субтитры обязательно, обложки в стиле канала.'},
+  {id:2, src:'Форма заявки', ico:'✉', ago:'3 часа назад', hot:true, name:'Артём Гончаров', company:'Студия «Полёт»',
+   tg:'', phone:'79037714502', mail:'artem@polet.studio',
+   task:'Лендинг под ключ', price:'15 000 ₽', term:'1 рабочий день', note:'Запускаем новый продукт в понедельник, нужна страница под трафик. Логотип и фото есть.'},
+  {id:3, src:'Квиз на сайте', ico:'✳', ago:'сегодня, 11:40', hot:false, name:'Елена Соколова', company:'ИП Соколова',
+   tg:'', phone:'79992144102', mail:'',
+   task:'Презентация, 50 слайдов', price:'10 000 ₽', term:'2 рабочих дня', note:'Презентация для инвестора, текст есть, нужна структура и дизайн.'},
+  {id:4, src:'Партнёрская ссылка', ico:'◇', ago:'вчера, 18:05', hot:false, name:'Павел Дроздов', company:'Сеть «Северный кофе»',
+   tg:'pavel_drozdov', phone:'', mail:'',
+   task:'Автоматизация и CRM', price:'30 000 ₽', term:'до 5 рабочих дней', note:'Пришёл по рекомендации от «Ремесла». Нужно связать заявки из соцсетей с CRM и отчётность.'}
+];
+function contactLine(l){
+  const p = [];
+  if (l.tg) p.push('@' + l.tg);
+  if (l.phone) p.push('+' + l.phone.replace(/(\d)(\d{3})(\d{3})(\d{2})(\d{2})/,'$1 $2 $3-$4-$5'));
+  if (l.mail) p.push(l.mail);
+  return p.join(' · ');
+}
+function contactBtns(l, size){
+  const cls = 'btn ' + (size || 'sm') + ' ';
+  let h = '';
+  if (l.tg) h += '<a class="'+cls+'" style="width:auto" target="_blank" rel="noopener" href="https://t.me/'+l.tg+'">Telegram</a>';
+  if (l.phone) h += '<a class="'+cls+'line" style="width:auto" target="_blank" rel="noopener" href="https://wa.me/'+l.phone+'">WhatsApp</a>';
+  if (l.phone) h += '<a class="'+cls+'line" style="width:auto" href="tel:+'+l.phone+'">Позвонить</a>';
+  if (l.mail) h += '<a class="'+cls+'line" style="width:auto" href="mailto:'+l.mail+'">Почта</a>';
+  return h;
+}
+const COLS = [
+  {id:'brief', t:'ТЗ и смета'},
+  {id:'work', t:'В работе'},
+  {id:'check', t:'Проверка'},
+  {id:'accept', t:'У клиента'},
+  {id:'done', t:'Сдано'}
+];
+let JOBS = [
+  {id:11, t:'30 роликов · часть 3', cl:'ООО «Ремесло»', who:'ИГ', col:'accept', due:'31.08', hot:true, sum:7500},
+  {id:12, t:'Лендинг · дизайн и вёрстка', cl:'ООО «Ремесло»', who:'НС', col:'check', due:'сегодня', hot:true, sum:7500},
+  {id:13, t:'Презентация · структура', cl:'ООО «Ремесло»', who:'ДС', col:'brief', due:'03.09', hot:false, sum:10000},
+  {id:14, t:'Подкаст · выпуск 12', cl:'Формат', who:'ИГ', col:'work', due:'01.09', hot:false, sum:5000},
+  {id:15, t:'Обложки YouTube · 10 шт', cl:'Формат', who:'НС', col:'work', due:'30.08', hot:true, sum:2500},
+  {id:16, t:'Бот приёма заявок', cl:'Северный кофе', who:'КП', col:'brief', due:'05.09', hot:false, sum:7000},
+  {id:17, t:'Reels · август', cl:'Северный кофе', who:'ИГ', col:'done', due:'27.08', hot:false, sum:15000}
+];
+
+/* навигация */
+function go(tab){
+  $$('[data-panel]').forEach(p => p.hidden = p.dataset.panel !== tab);
+  $$('.navbtn').forEach(b => b.setAttribute('aria-current', String(b.dataset.tab === tab)));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+$$('.navbtn').forEach(b => { if (b.dataset.tab) b.addEventListener('click', () => go(b.dataset.tab)); });
+$$('[data-tab-go]').forEach(b => b.addEventListener('click', () => go(b.dataset.tabGo)));
+$$('[data-go]').forEach(b => b.addEventListener('click', () => { closeAll(); go(b.dataset.go); }));
+$('#moreBtn').addEventListener('click', () => $('#moreSheet').hidden = false);
+function closeAll(){ ['#leadModal','#jobModal','#moreSheet'].forEach(s => $(s).hidden = true); }
+$$('[data-close]').forEach(b => b.addEventListener('click', closeAll));
+$$('.scrim').forEach(s => s.addEventListener('click', e => { if (e.target === s) closeAll(); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+
+/* тосты */
+let tt;
+function toast(t){ const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(tt); tt = setTimeout(() => el.hidden = true, 3600); }
+document.addEventListener('click', e => { const b = e.target.closest('[data-toast]'); if (b) toast(b.dataset.toast); });
+
+/* заявки */
+function leadCard(l, compact){
+  if (compact){
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.innerHTML = '<div><h3>'+l.task+'</h3><p class="small dim" style="margin-top:3px">'+l.company+' · '+l.ago+'</p></div>'+
+      '<button class="btn sm line">Открыть</button>';
+    d.querySelector('button').addEventListener('click', () => openLead(l.id));
+    return d;
+  }
+  const d = document.createElement('div');
+  d.className = 'lead' + (l.hot ? ' hot' : '');
+  d.innerHTML =
+    '<div class="src">'+l.ico+'</div>'+
+    '<div><h3>'+l.task+' · '+l.price+'</h3>'+
+    '<div class="meta"><span>'+l.src+'</span><span>'+l.ago+'</span><span>'+l.term+'</span>'+(l.hot?'<span style="color:var(--crit)">БЕЗ ОТВЕТА &gt; 1 Ч</span>':'')+'</div>'+
+    '<p class="txt"><b>'+l.name+'</b>, '+l.company+' · '+contactLine(l)+'</p>'+
+    '<p class="txt">'+l.note+'</p>'+
+    '<div class="conn">'+contactBtns(l)+'</div></div>'+
+    '<div class="leadacts"><button class="btn sm">Открыть</button></div>';
+  d.querySelector('.leadacts button').addEventListener('click', () => openLead(l.id));
+  return d;
+}
+function renderLeads(){
+  const box = $('#leadList'); box.innerHTML = '';
+  LEADS.forEach(l => box.appendChild(leadCard(l)));
+  $('#leadEmpty').hidden = LEADS.length > 0;
+  const hb = $('#homeLeads'); hb.innerHTML = '';
+  LEADS.slice(0,4).forEach(l => hb.appendChild(leadCard(l, true)));
+  $('#leadCount').textContent = LEADS.length;
+  $('#kpiLeads').textContent = LEADS.length;
+  if (!LEADS.length) $('#leadCount').style.display = 'none';
+}
+let curLead = null;
+function openLead(id){
+  curLead = LEADS.find(l => l.id === id); if (!curLead) return;
+  $('#lmSrc').textContent = curLead.src + ' · ' + curLead.ago;
+  $('#lmTitle').textContent = curLead.task;
+  $('#lmName').textContent = curLead.name + ', ' + curLead.company;
+  $('#lmContact').textContent = contactLine(curLead);
+  $('#lmConn').innerHTML = contactBtns(curLead);
+  $('#lmTask').textContent = curLead.task;
+  $('#lmPrice').textContent = curLead.price;
+  $('#lmTerm').textContent = curLead.term;
+  $('#lmNote').textContent = curLead.note;
+  $('#leadModal').hidden = false;
+}
+$('#lmTake').addEventListener('click', () => {
+  if (!curLead) return;
+  JOBS.unshift({id:Date.now(), t:curLead.task, cl:curLead.company, who:'ДС', col:'brief', due:'уточнить', hot:false, sum:parseInt(curLead.price.replace(/\D/g,'')) || 0, tg:curLead.tg, phone:curLead.phone});
+  LEADS = LEADS.filter(l => l.id !== curLead.id);
+  $('#lmGreet').addEventListener('click', async () => {
+  const t = 'Здравствуйте, ' + curLead.name.split(' ')[0] + '! Это Дарья из NOVA — вы оставили заявку на «' + curLead.task + '». '
+    + 'Предварительно это ' + curLead.price + ', срок — ' + curLead.term + '. Уточню пару деталей, соберу точное ТЗ и пришлю смету. '
+    + 'Договор, счёт и приёмку ведём в личном кабинете, общаться удобно здесь.';
+  try { await navigator.clipboard.writeText(t); } catch(e){}
+  toast('Приветствие скопировано — вставьте в мессенджер');
+});
+
+renderLeads(); renderBoard(); closeAll();
+  toast('Заявка в работе. Напишите клиенту в мессенджер — задача уже на доске');
+});
+$('#lmDrop').addEventListener('click', () => {
+  LEADS = LEADS.filter(l => l.id !== curLead.id);
+  renderLeads(); closeAll();
+  toast('Заявка отклонена. Клиенту отправлен вежливый отказ');
+});
+
+/* доска */
+function renderBoard(){
+  const b = $('#board'); b.innerHTML = '';
+  COLS.forEach(c => {
+    const list = JOBS.filter(j => j.col === c.id);
+    const col = document.createElement('div');
+    col.className = 'col';
+    col.innerHTML = '<h4><span>'+c.t+'</span><span>'+list.length+'</span></h4>';
+    const wrap = document.createElement('div'); wrap.className = 'jobs';
+    list.forEach(j => {
+      const card = document.createElement('div');
+      card.className = 'job';
+      card.innerHTML = '<b>'+j.t+'</b><span class="cl">'+j.cl+'</span>'+
+        '<div class="row"><span class="who">'+j.who+'</span><span class="due'+(j.hot?' hot':'')+'">'+j.due+'</span></div>';
+      card.addEventListener('click', () => openJob(j.id));
+      wrap.appendChild(card);
+    });
+    col.appendChild(wrap);
+    b.appendChild(col);
+  });
+  $('#kpiJobs').textContent = JOBS.filter(j => j.col !== 'done').length;
+}
+let curJob = null;
+function openJob(id){
+  curJob = JOBS.find(j => j.id === id); if (!curJob) return;
+  $('#jmClient').textContent = curJob.cl;
+  $('#jmTitle').textContent = curJob.t;
+  $('#jmWho').textContent = curJob.who;
+  $('#jmDue').textContent = curJob.due;
+  $('#jmSum').textContent = money(curJob.sum);
+  const st = $('#jmSteps'); st.innerHTML = '';
+  const i = COLS.findIndex(c => c.id === curJob.col);
+  COLS.forEach((c,n) => {
+    const d = document.createElement('div');
+    d.className = 'st' + (n < i ? ' done' : n === i ? ' on' : '');
+    d.textContent = c.t;
+    st.appendChild(d);
+  });
+  $('#jmNext').disabled = curJob.col === 'done';
+  $('#jmDeliver').disabled = curJob.col === 'done' || curJob.col === 'accept';
+  $('#jmWrite').onclick = () => {
+    if (curJob.tg) window.open('https://t.me/' + curJob.tg, '_blank');
+    else if (curJob.phone) window.open('https://wa.me/' + curJob.phone, '_blank');
+    else toast('У клиента сохранён контакт в карточке — раздел «Клиенты»');
+  };
+  $('#jobModal').hidden = false;
+}
+$('#jmNext').addEventListener('click', () => {
+  const i = COLS.findIndex(c => c.id === curJob.col);
+  if (i < COLS.length - 1){ curJob.col = COLS[i+1].id; renderBoard(); closeAll(); toast('Задача переведена: ' + COLS[i+1].t); }
+});
+$('#jmDeliver').addEventListener('click', () => {
+  curJob.col = 'accept'; renderBoard(); closeAll();
+  toast('Этап сдан. Клиенту ушло уведомление, счёт на ' + money(curJob.sum) + ' выставлен, запущен срок приёмки');
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-deliver]');
+  if (!b) return;
+  const j = JOBS.find(x => x.t === b.dataset.deliver);
+  if (j){ j.col = 'accept'; renderBoard(); }
+  b.textContent = 'Сдано'; b.disabled = true;
+  toast('Этап сдан клиенту, счёт выставлен автоматически');
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-sign]');
+  if (b){ b.textContent = 'Подписан'; b.disabled = true; toast(b.dataset.sign + ' подписан и отправлен клиенту на подпись'); }
+});
+
+/* вход */
+$('#loginGo').addEventListener('click', () => {
+  const v = $('#loginId').value.trim();
+  if (!/.+@.+\..+/.test(v)){ toast('Введите рабочую почту'); return; }
+  $('#authForm').hidden = true; $('#authCode').hidden = false;
+  $('#codeTo').textContent = 'Код отправлен на ' + v;
+});
+$('#codeBack').addEventListener('click', () => { $('#authForm').hidden = false; $('#authCode').hidden = true; });
+$('#codeGo').addEventListener('click', () => {
+  $('#auth').hidden = true; $('#shell').hidden = false;
+  go('home'); toast('Добро пожаловать, Дарья. 4 новые заявки ждут разбора');
+});
+[$('#logout'), $('#logout2')].forEach(b => b.addEventListener('click', () => {
+  $('#shell').hidden = true; $('#auth').hidden = false;
+  $('#authForm').hidden = false; $('#authCode').hidden = true;
+}));
+
+$('#lmGreet').addEventListener('click', async () => {
+  const t = 'Здравствуйте, ' + curLead.name.split(' ')[0] + '! Это Дарья из NOVA — вы оставили заявку на «' + curLead.task + '». '
+    + 'Предварительно это ' + curLead.price + ', срок — ' + curLead.term + '. Уточню пару деталей, соберу точное ТЗ и пришлю смету. '
+    + 'Договор, счёт и приёмку ведём в личном кабинете, общаться удобно здесь.';
+  try { await navigator.clipboard.writeText(t); } catch(e){}
+  toast('Приветствие скопировано — вставьте в мессенджер');
+});
+
+renderLeads(); renderBoard();
+</script>
+
+</body>
+</html>
