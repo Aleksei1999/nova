@@ -2,9 +2,25 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1B62FF">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<title>NOVA Кабинет</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <title>NOVA Кабинет</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
@@ -26,6 +42,10 @@
   --blue:#4D86FF; --mint:#2ED9A6; --warn:#FFB43D; --crit:#FF6B6B;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
 }
+
+/* запрет масштабирования на мобильных */
+html{touch-action:manipulation; -webkit-text-size-adjust:100%; text-size-adjust:100%}
+body{touch-action:manipulation; overscroll-behavior-y:contain}
 *{box-sizing:border-box}
 body{margin:0; background:var(--surface); color:var(--ink); font-family:Onest,"Segoe UI",system-ui,sans-serif; font-size:15px; line-height:1.5}
 h1,h2,h3,h4{margin:0; letter-spacing:-.02em; font-weight:700; line-height:1.18; text-wrap:balance}
@@ -190,9 +210,10 @@ label.f span{display:block; font-size:13px; color:var(--ink-3); margin-bottom:6p
 .ok-ico{width:56px;height:56px;border-radius:50%;background:var(--mint);color:#fff;display:grid;place-items:center;font-size:26px;margin:0 auto 16px}
 
 /* вход и регистрация */
-.auth{position:fixed; inset:0; z-index:300; background:var(--surface); display:grid; grid-template-columns:1.05fr .95fr; overflow:auto}
+.auth{position:fixed; inset:0; z-index:300; background:var(--surface); display:grid; grid-template-columns:1.05fr .95fr; align-items:stretch; overflow:auto}
 .auth[hidden]{display:none}
-.authside{background:var(--ink); color:#F6F9FF; padding:clamp(28px,4vw,54px); display:flex; flex-direction:column; justify-content:space-between; gap:30px}
+.authside{position:relative; background:var(--ink); color:#F6F9FF; padding:clamp(28px,4vw,54px); display:flex; flex-direction:column; justify-content:center; gap:28px}
+.authside .demo{position:absolute; left:clamp(28px,4vw,54px); right:clamp(28px,4vw,54px); bottom:clamp(24px,3vw,40px); color:#7A8AA3}
 .authside h2{color:#fff; font-size:clamp(24px,2.6vw,34px); letter-spacing:-.03em; max-width:16ch}
 .authside p{color:#A9B8CE; margin-top:14px; max-width:44ch}
 .authside .plus{display:flex; gap:12px; align-items:flex-start; margin-top:16px}
@@ -205,10 +226,15 @@ label.f span{display:block; font-size:13px; color:var(--ink-3); margin-bottom:6p
 .authtabs button{flex:1; background:none; border:0; font-family:inherit; font-size:14px; font-weight:700; color:var(--ink-2); padding:10px; border-radius:10px; cursor:pointer}
 .authtabs button[aria-pressed="true"]{background:var(--ground); color:var(--ink); box-shadow:var(--shadow)}
 @media(max-width:900px){
-  .auth{grid-template-columns:1fr}
-  .authside{order:2; padding:26px 18px calc(30px + env(safe-area-inset-bottom))}
-  .authside h2{font-size:22px}
-  .authmain{padding:calc(26px + env(safe-area-inset-top)) 18px 26px}
+  .auth{grid-template-columns:1fr; grid-template-rows:auto minmax(min-content,1fr); align-content:stretch; background:var(--ink)}
+  .authmain{background:var(--surface)}
+  .authside{order:2; justify-content:flex-start; gap:22px; padding:clamp(34px,6vh,64px) 20px calc(clamp(34px,6vh,64px) + env(safe-area-inset-bottom))}
+  .authside h2{font-size:22px; max-width:none}
+  .authside p{margin-top:10px}
+  .authside .plus{margin-top:14px}
+  .authside .demo{position:static; margin-top:auto; padding-top:22px}
+  .authmain{place-items:center; padding:calc(clamp(34px,5vh,56px) + env(safe-area-inset-top)) 20px clamp(34px,5vh,56px)}
+  .authbox{max-width:520px}
 }
 .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--ink); color:var(--ground); padding:13px 20px; border-radius:12px; font-weight:600; font-size:14px; box-shadow:var(--shadow); z-index:200; max-width:92vw; text-align:center}
 .toast[hidden]{display:none}
@@ -340,9 +366,9 @@ section[hidden]{display:none}
     <div>
       <div class="plus"><span class="pi">₽</span><div><b>Оплата по этапам</b><span>Картой, через СБП или по счёту. Чек — сразу на почту</span></div></div>
       <div class="plus"><span class="pi">▤</span><div><b>Документы сами</b><span>Договор, счёт и акт формируются автоматически</span></div></div>
-      <div class="plus"><span class="pi">◆</span><div><b>Скидки и бонусы</b><span>До 20% скидки и 5 000 ₽ за каждую рекомендацию</span></div></div>
+      <div class="plus"><span class="pi">◆</span><div><b>Скидки и бонусы</b><span>До 20% скидки и 5 000 ₽ вам и 2 500 ₽ другу за рекомендацию</span></div></div>
     </div>
-    <p class="small" style="color:#7A8AA3">Демо-режим: любой код подойдёт, данные не сохраняются.</p>
+    <p class="small demo">Демо-режим: любой код подойдёт, данные не сохраняются.</p>
   </div>
 </div>
 
@@ -646,7 +672,7 @@ section[hidden]{display:none}
         <div class="card">
           <h2>Как получить больше</h2>
           <div class="list" style="margin-top:18px">
-            <div class="item"><div><h3>Рекомендация</h3><p class="small dim" style="margin-top:3px">5 000 ₽ за каждого клиента по вашей ссылке</p></div><button class="btn sm ghost" data-tab-go="partner">К партнёрке</button></div>
+            <div class="item"><div><h3>Рекомендация</h3><p class="small dim" style="margin-top:3px">5 000 ₽ вам и 2 500 ₽ другу по вашей ссылке</p></div><button class="btn sm ghost" data-tab-go="partner">К партнёрке</button></div>
             <div class="item"><div><h3>Подписка вместо разовых задач</h3><p class="small dim" style="margin-top:3px">−15% к цене каждой работы внутри тарифа</p></div><button class="btn sm line" data-toast="Менеджер свяжется и подберёт тариф подписки">Узнать</button></div>
             <div class="item"><div><h3>Предоплата пакета этапов</h3><p class="small dim" style="margin-top:3px">−7% при оплате всех этапов проекта сразу</p></div><button class="btn sm line" data-toast="Пересчитаем проект с предоплатой и пришлём счёт">Посчитать</button></div>
             <div class="item"><div><h3>Отзыв или кейс</h3><p class="small dim" style="margin-top:3px">2 500 ₽ за развёрнутый отзыв</p></div><button class="btn sm line" data-toast="Спасибо! Форма отзыва открыта">Оставить</button></div>
@@ -659,7 +685,7 @@ section[hidden]{display:none}
     <section data-panel="partner" hidden>
       <div class="topbar"><div><p class="eyebrow">Партнёрская программа</p><h1 style="margin-top:8px">Рекомендуйте и получайте 5 000 ₽</h1></div></div>
       <div class="card">
-        <p class="muted" style="font-size:16px">За каждого клиента, который пришёл по вашей ссылке и оплатил первый этап, на бонусный баланс приходит <b style="color:var(--mint)">5 000 ₽</b>. Бонусами можно закрыть до половины любого счёта. Ограничений по количеству приглашённых нет.</p>
+        <p class="muted" style="font-size:16px">Друг переходит по вашей ссылке и оформляет заказ от <b>5 000 ₽</b> — в тот же день вам на бонусный баланс приходит <b style="color:var(--mint)">5 000 ₽</b>, а ему мы даём <b style="color:var(--mint)">2 500 ₽</b> бонусов на первый заказ. Бонусами можно закрыть до половины любого счёта. Ограничений по количеству приглашённых нет.</p>
         <div class="ref">
           <div class="reflink" id="reflink">nova.ru/?ref=remeslo-4417</div>
           <button class="btn" data-copy>Скопировать ссылку</button>
@@ -683,7 +709,7 @@ section[hidden]{display:none}
             <tr><td>ИП Соколова</td><td class="mono">25.08.2026</td><td><span class="pill wait">ЗАЯВКА</span></td><td class="mono dim">ожидает</td></tr>
           </table>
         </div>
-        <p class="small dim" style="margin-top:16px">Бонус приходит в течение суток после оплаты приглашённым первого этапа.</p>
+        <p class="small dim" style="margin-top:16px">Оплата приглашённого видна в системе автоматически — бонус начисляется в течение суток после первого платежа от 5 000 ₽.</p>
       </div>
     </section>
 
@@ -1219,6 +1245,23 @@ $('#sigFile').addEventListener('change', e => {
 showSignature();
 
 renderBalance(); renderMethods();
+</script>
+
+<script>
+(function(){
+  /* пинч-зум */
+  document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('gesturechange', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('gestureend', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('touchmove', function(e){ if(e.touches.length>1) e.preventDefault(); }, {passive:false});
+  /* двойной тап */
+  var last=0;
+  document.addEventListener('touchend', function(e){
+    var now=Date.now();
+    if(now-last<=320){ e.preventDefault(); }
+    last=now;
+  }, {passive:false});
+})();
 </script>
 
 </body>

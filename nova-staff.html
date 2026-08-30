@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1B62FF">
 <title>NOVA Работа</title>
@@ -26,6 +26,10 @@
   --blue:#4D86FF; --mint:#2ED9A6; --warn:#FFB43D; --crit:#FF6B6B; --violet:#A47BFF;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
 }
+
+/* запрет масштабирования на мобильных */
+html{touch-action:manipulation; -webkit-text-size-adjust:100%; text-size-adjust:100%}
+body{touch-action:manipulation; overscroll-behavior-y:contain}
 *{box-sizing:border-box}
 body{margin:0; background:var(--surface); color:var(--ink); font-family:Onest,"Segoe UI",system-ui,sans-serif; font-size:15px; line-height:1.5}
 h1,h2,h3,h4{margin:0; letter-spacing:-.02em; font-weight:700; line-height:1.2; text-wrap:balance}
@@ -684,6 +688,23 @@ $('#lmGreet').addEventListener('click', async () => {
 });
 
 renderLeads(); renderBoard();
+</script>
+
+<script>
+(function(){
+  /* пинч-зум */
+  document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('gesturechange', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('gestureend', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('touchmove', function(e){ if(e.touches.length>1) e.preventDefault(); }, {passive:false});
+  /* двойной тап */
+  var last=0;
+  document.addEventListener('touchend', function(e){
+    var now=Date.now();
+    if(now-last<=320){ e.preventDefault(); }
+    last=now;
+  }, {passive:false});
+})();
 </script>
 
 </body>

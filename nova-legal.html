@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
 <title>Документы NOVA</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
@@ -22,6 +22,10 @@
   --ground:#080D17; --surface:#101A2B; --surface-2:#18253A; --line:#22314A; --blue:#4D86FF;
   --shadow:0 1px 2px rgba(0,0,0,.5),0 16px 40px -22px rgba(0,0,0,.9);
 }
+
+/* запрет масштабирования на мобильных */
+html{touch-action:manipulation; -webkit-text-size-adjust:100%; text-size-adjust:100%}
+body{touch-action:manipulation; overscroll-behavior-y:contain}
 *{box-sizing:border-box}
 body{margin:0; background:var(--ground); color:var(--ink); font-family:Onest,"Segoe UI",system-ui,sans-serif; font-size:16px; line-height:1.6}
 h1,h2,h3{margin:0; letter-spacing:-.03em; font-weight:800; line-height:1.15; text-wrap:balance}
@@ -298,6 +302,23 @@ footer a:hover{color:var(--blue)}
   });
   var start=location.hash.slice(1);
   show(DOCS.some(function(d){return d[0]===start;}) ? start : 'privacy');
+})();
+</script>
+
+<script>
+(function(){
+  /* пинч-зум */
+  document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('gesturechange', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('gestureend', function(e){ e.preventDefault(); }, {passive:false});
+  document.addEventListener('touchmove', function(e){ if(e.touches.length>1) e.preventDefault(); }, {passive:false});
+  /* двойной тап */
+  var last=0;
+  document.addEventListener('touchend', function(e){
+    var now=Date.now();
+    if(now-last<=320){ e.preventDefault(); }
+    last=now;
+  }, {passive:false});
 })();
 </script>
 
