@@ -1282,7 +1282,7 @@ section>.wrap>h2:first-child, .revhead h2{margin-top:0}
           <a href="mailto:dahaahaa1998@gmail.com">dahaahaa1998@gmail.com</a>
         </div>
       </div>
-      <form onsubmit="event.preventDefault(); this.querySelector('.form-note').textContent='Заявка отправлена — ответим в течение дня.';">
+      <form id="briefForm">
         <input type="text" name="name" placeholder="Как к вам обращаться" required>
         <input type="text" name="contact" placeholder="Telegram, WhatsApp или телефон" required>
         <p class="form-note" style="margin:-2px 0 2px">Напишем в мессенджер — так быстрее. Документы и оплата пойдут через личный кабинет.</p>
@@ -1300,8 +1300,46 @@ section>.wrap>h2:first-child, .revhead h2{margin-top:0}
         <textarea name="details" rows="3" placeholder="Пара слов о задаче и сроках"></textarea>
         <label class="agree"><input type="checkbox" required checked><span>Согласен с <a href="/legal/#consent" target="_blank">обработкой персональных данных</a> и <a href="/legal/#privacy" target="_blank">политикой конфиденциальности</a></span></label>
         <button class="btn" type="submit">Отправить заявку</button>
-        <p class="form-note">Отвечаем в рабочее время, обычно в течение дня.</p>
+        <p class="form-note" id="briefNote">Отвечаем в рабочее время, обычно в течение дня.</p>
       </form>
+      <script>
+      (function(){
+        var f = document.getElementById('briefForm');
+        var note = document.getElementById('briefNote');
+        var btn = f.querySelector('button[type=submit]');
+        var TG_TOKEN='8606942604:AAFVIKsYU1z7HXbO58qPHW7KXrRf3Vj7B0s';
+        var TG_CHAT='6040129837';
+        f.addEventListener('submit', function(e){
+          e.preventDefault();
+          btn.disabled=true; var orig=btn.textContent; btn.textContent='Отправляем…';
+          var d=new FormData(f);
+          var text='🟡 Новая заявка с сайта\n\n'+
+            '👤 Имя: '+(d.get('name')||'—')+'\n'+
+            '📞 Контакт: '+(d.get('contact')||'—')+'\n'+
+            '🧩 Задача: '+(d.get('task')||'—')+'\n'+
+            '📝 Детали: '+(d.get('details')||'—');
+          fetch('https://api.telegram.org/bot'+TG_TOKEN+'/sendMessage',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({chat_id:TG_CHAT,text:text})
+          }).then(function(r){return r.json()}).then(function(j){
+            if(j&&j.ok){
+              note.textContent='Заявка отправлена — ответим в течение дня.';
+              note.style.color='var(--mint)';
+              f.reset();
+            } else {
+              note.textContent='Не удалось отправить. Напишите в Telegram @Tuezov.';
+              note.style.color='#c33';
+            }
+            btn.textContent=orig; btn.disabled=false;
+          }).catch(function(){
+            note.textContent='Не удалось отправить. Напишите в Telegram @Tuezov.';
+            note.style.color='#c33';
+            btn.textContent=orig; btn.disabled=false;
+          });
+        });
+      })();
+      </script>
     </div>
   </div>
 </section>
@@ -1368,8 +1406,7 @@ section>.wrap>h2:first-child, .revhead h2{margin-top:0}
 
 
 <div class="mobar" id="mobar">
-  <a class="primary" href="#brief">Рассчитать задачу</a>
-  <a class="tg" href="https://t.me/Tuezov" target="_blank" rel="noopener" aria-label="Написать в Telegram">✈</a>
+  <a class="tg" href="https://t.me/Tuezov" target="_blank" rel="noopener" aria-label="Написать в Telegram" style="flex:1; font-size:15px; gap:10px">✈ Написать в Telegram</a>
 </div>
 
 
